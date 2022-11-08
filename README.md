@@ -1,2 +1,1 @@
-# testingSCL
-Created with CodeSandbox
+# scl_proj
