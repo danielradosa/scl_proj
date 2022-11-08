@@ -27,8 +27,7 @@ const Signup = () => {
     const handleSubmit = useCallback((e) => {
         e.preventDefault();
         if (password === passwordC) {
-            signupMutation({ variables: { email, password, handle: "@" + handle, username, role } })
-            console.log(variables);
+            signupMutation({ variables: { email, password, handle: "@" + handle, username, role } });
         } else {
             alert("Passwords do not match");
         }
