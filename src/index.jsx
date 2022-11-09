@@ -1,7 +1,12 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
-import { setContext } from '@apollo/client/link/context';
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 import App from "./App";
 
 const rootElement = document.getElementById("root");
@@ -15,25 +20,26 @@ const httpLink = new HttpLink({
 
 // set token to headers
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  const token =
+    localStorage.getItem("token") || sessionStorage.getItem("token");
 
   return {
     headers: {
       ...headers,
-      authorization: `Bearer ${token}` || '',
-    }
-  }
+      authorization: `Bearer ${token}` || "",
+    },
+  };
 });
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 root.render(
   <ApolloProvider client={client}>
-            <React.StrictMode>
-              <App />
-            </React.StrictMode>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
   </ApolloProvider>
 );
