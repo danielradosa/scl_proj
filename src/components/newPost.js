@@ -26,7 +26,7 @@ export default function NewPost() {
       e.preventDefault();
       const title = e.target.title.value;
       const content = e.target.content.value;
-      const postedBy = localStorage.getItem("handle") || sessionStorage.getItem("handle");
+      const postedBy = localStorage.getItem("currentUserHandle") || sessionStorage.getItem("currentUserHandle");
       const createdAt = moment().format('MM-DD-YYYY hh:mm a');
       addPost({ variables: { title, content, postedBy, createdAt } });
 

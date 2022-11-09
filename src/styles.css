@@ -1,16 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost&family=Roboto&display=swap');
+
 * {
   margin: 0 auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  font-family: "Segoe UI";
+  font-family: 'Jost', sans-serif;
   color: orange;
   background-color: black;
   padding: 24px;
 }
 
 h1 {
-  font-family: "Segoe UI";
   letter-spacing: 1px;
   text-align: center;
 }
@@ -30,6 +33,10 @@ ul li {
   width: 36px;
   height: 36px;
   border-radius: 100%;
+}
+
+.date {
+  font-size: 10px !important;
 }
 
 .Posts {

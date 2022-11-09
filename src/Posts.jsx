@@ -49,11 +49,10 @@ export default function Posts() {
 
   // set handle to local and session storage
   useEffect(() => {
+    const storage = localStorage && sessionStorage;
     if (currentUser) {
-      localStorage.setItem("handle", currentUser.handle);
-      sessionStorage.setItem("handle", currentUser.handle);
-      localStorage.setItem("profilePicture", currentUser.profilePicture);
-      sessionStorage.setItem("profilePicture", currentUser.profilePicture);
+      storage.setItem('user', currentUser);
+      storage.setItem('currentUserHandle', currentUser.handle);
     }
   }, [currentUser]);
 
@@ -91,33 +90,6 @@ export default function Posts() {
     }
   };
 
-  // time since post was created
-  const timeSince = (date) => {
-    const seconds = Math.floor((new Date() - date) / 1000);
-    let interval = seconds / 31536000;
-    
-    if (interval > 1) {
-      return Math.floor(interval) + " years ago";
-    }
-    interval = seconds / 2592000;
-    if (interval > 1) {
-      return Math.floor(interval) + " months ago";
-    }
-    interval = seconds / 86400;
-    if (interval > 1) {
-      return Math.floor(interval) + " days ago";
-    }
-    interval = seconds / 3600;
-    if (interval > 1) {
-      return Math.floor(interval) + " hours ago";
-    }
-    interval = seconds / 60;
-    if (interval > 1) {
-      return Math.floor(interval) + " minutes ago";
-    }
-    return Math.floor(seconds) + " seconds ago";
-  };
-
   return (
     <div className="Posts">
       <NewPost />
@@ -138,7 +110,7 @@ export default function Posts() {
               <span className="handle">
                 {post.postedBy.username} |{" "}
                 <span className="handlena">{post.postedBy.handle}</span>
-                &nbsp;* {timeSince(new Date(post.createdAt))}
+                &nbsp;* <span className="date">{ new Date(post.createdAt).toLocaleString("fr-FR") }</span>
               </span>
               <h4>{post.title}</h4>
               <p>{post.content}</p>
