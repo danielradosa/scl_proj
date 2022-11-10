@@ -83,7 +83,7 @@ export default function Posts() {
       deletePost({ variables: { id: post.id } });
     };
 
-    if (currentUser.handle === post.postedBy?.handle) {
+    if (currentUser.handle === post.postedBy.handle) {
       return (
         <button className="delete" onClick={handleDelete}>X</button>
       )
