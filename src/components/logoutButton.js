@@ -7,6 +7,11 @@ export default function LogoutButton() {
     const handleLogout = useCallback(() => {
         localStorage.removeItem('token');
         sessionStorage.removeItem('token');
+<<<<<<< Updated upstream
+=======
+        localStorage.removeItem("profilePicture");
+        sessionStorage.removeItem("profilePicture");
+>>>>>>> Stashed changes
         navigate('/login');
     }, [navigate]);
 

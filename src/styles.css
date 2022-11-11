@@ -139,7 +139,6 @@ button {
   font-weight: bold;
   cursor: pointer;
   float: right;
-  margin-right: -2.5em;
   max-width: 200px;
   text-align: center;
 }
@@ -171,4 +170,8 @@ button {
 
 .posting img {
   border-radius: 100%;
+}
+
+.likes {
+  float: right;
 }
