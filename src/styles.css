@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost&family=Roboto&display=swap');
 
+html {
+  scroll-behavior: smooth !important;
+}
+
 * {
   margin: 0 auto;
   -webkit-font-smoothing: antialiased;
@@ -141,6 +145,13 @@ button {
   float: right;
   max-width: 200px;
   text-align: center;
+}
+
+.like {
+  margin: 0em;
+  background-color: black;
+  padding: 0em;
+  font-size: 16px;
 }
 
 .logout button {

@@ -1,99 +1,45 @@
 import "./styles.css";
-import { useQuery, useMutation, gql } from "@apollo/client";
-import React, { useState, useEffect } from "react";
 import NewPost from "./components/newPost";
-
-const GET_CURRENT_USER = gql`
- {
-    getCurrentUser(token: "${
-      localStorage.getItem("token") || sessionStorage.getItem("token")
-    }") {
-      id
-      handle
-      profilePicture
-    }
-  }
-`;
-
-const ALL_POSTS = gql`
-  {
-    getAllPosts {
-      id
-      title
-      content
-      postImage
-      postedBy {
-        id
-        username
-        profilePicture
-        handle
-      }
-      createdAt
-      likedBy {
-        id
-        handle
-      }
-    }
-  }
-`;
-
-const DELETE_POST = gql`
-  mutation deletePostById($id: ID!) {
-    deletePostById(id: $id) {
-      id
-    }
-  }
-`;
-
-const LIKE_POST = gql`
-  mutation likePost($id: ID!, $token: String!) {
-    likePost(id: $id, token: $token) {
-      id
-    }
-  }
-`;
+import { useQuery, useMutation } from "@apollo/client";
+import React, { useState, useEffect } from "react";
+import { GET_CURRENT_USER, ALL_POSTS } from "./utils/Queries";
+import { DELETE_POST, LIKE_POST } from "./utils/Mutations";
 
 export default function Posts() {
-  const {
-    data: postsData,
-    loading: postsLoading,
-    error: postsError,
-    refetch,
-  } = useQuery(ALL_POSTS);
   const {
     data: currentUserData,
     loading: userLoading,
     error: userError,
-    refetch: userRefetch,
   } = useQuery(GET_CURRENT_USER);
+  const {
+    data: postsData,
+    loading: postsLoading,
+    error: postsError,
+  } = useQuery(ALL_POSTS);
 
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
-  const [deletePost] = useMutation(DELETE_POST);
-  const [likePost] = useMutation(LIKE_POST);
-
-  // set handle to local and session storage
-  useEffect(() => {
-    const storage = localStorage && sessionStorage;
-    if (currentUser) {
-      storage.setItem("user", currentUser);
-      storage.setItem("currentUserHandle", currentUser.handle);
-      storage.setItem("profilePicture", currentUser.profilePicture);
-    }
-    userRefetch();
-  }, [currentUser, userRefetch]);
+  const [deletePost] = useMutation(DELETE_POST, {
+    refetchQueries: [{ query: ALL_POSTS }],
+  });
+  const [likePost] = useMutation(LIKE_POST, {
+    refetchQueries: [{ query: ALL_POSTS }],
+  });
 
   // return user & post data
   useEffect(() => {
     if (currentUserData) {
+      const storage = localStorage && sessionStorage;
       setCurrentUser(currentUserData.getCurrentUser);
-      userRefetch(currentUserData);
+      storage.setItem("currentUserHandle", currentUser.handle);
+      storage.setItem("profilePicture", currentUser.profilePicture);
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);
-      refetch(postsData);
     }
-  }, [currentUserData, postsData, refetch()]);
+  }, [currentUserData, postsData]);
+
+  // wait for data to load then save handle and profile picture to local storage
 
   if (postsLoading && userLoading)
     return (
@@ -134,22 +80,16 @@ export default function Posts() {
       likePost({ variables: { id: post.id, token } });
     };
 
-    if (post.likedBy?.find((user) => user.handle === currentUser.handle)) {
+    if (post.likedBy.find((user) => user.handle === currentUser.handle)) {
       return (
         <button className="like" onClick={handleLike}>
-          <img
-            src="https://w7.pngwing.com/pngs/537/105/png-transparent-8-bit-color-heart-tar-miscellaneous-heart-poster.png"
-            height={32}
-          />
+          /// ❤️
         </button>
       );
     } else {
       return (
         <button className="like" onClick={handleLike}>
-          <img
-            src="http://pixelartmaker-data-78746291193.nyc3.digitaloceanspaces.com/image/a06b7edc1b13398.png"
-            height={32}
-          />
+          /// 🤍
         </button>
       );
     }

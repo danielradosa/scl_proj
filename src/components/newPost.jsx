@@ -1,26 +1,15 @@
 import "../styles.css";
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import moment from "moment";
-import { useMutation, gql } from "@apollo/client";
-
-const ADD_POST = gql`
-  mutation createPost($title: String!, $content: String!, $postedBy: String!, $createdAt: String!, $postImage: String!) {
-    createPost(title: $title, content: $content, postedBy: $postedBy, createdAt: $createdAt, postImage: $postImage) {
-      id
-      title
-      content
-      postImage
-      postedBy {
-        id
-      }
-      createdAt
-    }
-  }
-`;
+import { useMutation } from "@apollo/client";
+import { ADD_POST } from "../utils/Mutations";
+import { ALL_POSTS } from "../utils/Queries";
 
 export default function NewPost() {
-  const [addPost] = useMutation(ADD_POST);
-  const profPic = localStorage.getItem("profilePicture") || sessionStorage.getItem("profilePicture");
+  const [addPost] = useMutation(ADD_POST, { refetchQueries: [{ query: ALL_POSTS }] });
+
+  // get user profile picture from local storage and set to state
+  const [profilePicture] = useState(localStorage.getItem("profilePicture"));
 
   const createPost = useCallback(async (e) => {
     e.preventDefault();
@@ -69,10 +58,11 @@ export default function NewPost() {
       });
     }
 
-      // clear form
-      e.target.title.value = "";
-      e.target.content.value = "";
-    },
+    // clear form
+    e.target.title.value = "";
+    e.target.content.value = "";
+    e.target.image.value = "";
+  },
     [addPost],
   );
 
@@ -82,7 +72,7 @@ export default function NewPost() {
         <h2>Create new post</h2>
         <input type="text" placeholder="Title" name="title" maxLength={32} /> <span className="req"> * not required</span> <br />
         <div className="posting">
-          <img src={profPic} alt="prof_pic" width="80px" height="80" />
+          <img src={profilePicture} alt="prof_pic" width="80px" height="80" />
           <textarea name="content" rows="5" cols="33" placeholder="What's happening?" maxLength={280}></textarea>
         </div>
         <div className="uploadImage">

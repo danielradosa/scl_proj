@@ -6,8 +6,8 @@ export default function LogoutButton() {
 
     const handleLogout = useCallback(() => {
         const storage = localStorage && sessionStorage;
-        storage.removeItem('token');
-        storage.removeItem('currentUserHandle');
+        storage.removeItem("token");
+        storage.removeItem("currentUserHandle");
         storage.removeItem("profilePicture");
         navigate('/login');
     }, [navigate]);

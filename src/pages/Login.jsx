@@ -1,15 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
-
-const LOGIN_MUTATION = gql`
-  mutation ($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      email
-      token
-    }
-  }
-`;
+import { LOGIN_MUTATION } from "../utils/Mutations";
+import { GET_CURRENT_USER } from "../utils/Queries";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,23 +10,27 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
 
-  const [loginMutation] = useMutation(LOGIN_MUTATION);
+  const [loginMutation] = useMutation(LOGIN_MUTATION, { refetchQueries: [{ query: GET_CURRENT_USER }] });
 
-  const handleSubmit = useCallback(
-    (e, remember) => {
-      e.preventDefault();
-      loginMutation({ variables: { email, password } }).then(({ data }) => {
-        const storage = remember ? localStorage : sessionStorage;
-        storage.setItem("token", data.login.token);
-        navigate("/dashboard", { replace: true });
-      });
-    },
-    [loginMutation, email, password, navigate]
-  );
+  // set current user to local and session storage
+  const handleLogin = useCallback(async (e, remember) => {
+    e.preventDefault();
+    const { data } = await loginMutation({
+      variables: {
+        email,
+        password,
+      },
+    });
+    if (data) {
+      const storage = remember ? localStorage : sessionStorage;
+      storage.setItem("token", data.login.token);
+      navigate("/dashboard");
+    }
+  }, [email, password, remember, loginMutation, navigate]);
 
   return (
     <div className="login">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <h2>Login</h2>
         <input
           type="email"
