@@ -8,13 +8,13 @@ html {
   margin: 0 auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
 body {
   font-family: 'Jost', sans-serif;
   color: orange;
   background-color: black;
-  padding: 24px;
 }
 
 h1 {
@@ -93,10 +93,6 @@ form {
   box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
   display: flexbox;
   margin-top: 4em;
-}
-
-h2 {
-  margin-bottom: 1em;
 }
 
 input {
@@ -185,4 +181,19 @@ button {
 
 .likes {
   float: right;
+}
+
+.h-cont {
+  background-color: white;
+}
+
+.header {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center !important;
+}
+
+.header input {
+  margin-top: 1em;
 }
