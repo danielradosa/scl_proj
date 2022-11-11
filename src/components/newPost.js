@@ -24,11 +24,6 @@ export default function NewPost() {
 
   const createPost = useCallback(async (e) => {
     e.preventDefault();
-<<<<<<< Updated upstream
-
-=======
-    
->>>>>>> Stashed changes
     // post image to cloudinary
     const file = e.target.elements.image.files[0];
     const data = new FormData();
@@ -44,7 +39,7 @@ export default function NewPost() {
     const fileData = await res.json();
     const image = (fileData.secure_url);
 
-    // create post
+    // save input to variables
     const title = e.target.elements.title.value;
     const content = e.target.elements.content.value;
     const postedBy = localStorage.getItem("currentUserHandle") || sessionStorage.getItem("currentUserHandle");
@@ -74,20 +69,12 @@ export default function NewPost() {
       });
     }
 
-<<<<<<< Updated upstream
-    // clear form
-    e.target.elements.title.value = "";
-    e.target.elements.content.value = "";
-    e.target.elements.image.value = "";
-  }, [addPost]);
-=======
       // clear form
       e.target.title.value = "";
       e.target.content.value = "";
     },
     [addPost],
   );
->>>>>>> Stashed changes
 
   return (
     <div className="newPost">
@@ -99,13 +86,8 @@ export default function NewPost() {
           <textarea name="content" rows="5" cols="33" placeholder="What's happening?" maxLength={280}></textarea>
         </div>
         <div className="uploadImage">
-<<<<<<< Updated upstream
-          <input type="file" name="image" id="image" accept="image/*" />
-          <label htmlFor="image">Upload image</label>
-=======
           <label htmlFor="image">Upload image</label> {""}
           <input type="file" name="image" id="image" accept="image/*" />
->>>>>>> Stashed changes
         </div>
         <button type="submit">Create Post</button>
       </form>

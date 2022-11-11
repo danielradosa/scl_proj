@@ -64,6 +64,7 @@ export default function Posts() {
     data: currentUserData,
     loading: userLoading,
     error: userError,
+    refetch: userRefetch,
   } = useQuery(GET_CURRENT_USER);
 
   const [posts, setPosts] = useState([]);
@@ -75,28 +76,24 @@ export default function Posts() {
   useEffect(() => {
     const storage = localStorage && sessionStorage;
     if (currentUser) {
-<<<<<<< Updated upstream
-      storage.setItem('user', currentUser);
-      storage.setItem('currentUserHandle', currentUser.handle);
-=======
       storage.setItem("user", currentUser);
       storage.setItem("currentUserHandle", currentUser.handle);
       storage.setItem("profilePicture", currentUser.profilePicture);
->>>>>>> Stashed changes
     }
-  }, [currentUser]);
+    userRefetch();
+  }, [currentUser, userRefetch]);
 
-  // return user data
+  // return user & post data
   useEffect(() => {
     if (currentUserData) {
       setCurrentUser(currentUserData.getCurrentUser);
-      refetch();
+      userRefetch(currentUserData);
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);
-      refetch();
+      refetch(postsData);
     }
-  }, [currentUserData, postsData, refetch]);
+  }, [currentUserData, postsData, refetch()]);
 
   if (postsLoading && userLoading)
     return (
@@ -119,11 +116,7 @@ export default function Posts() {
       deletePost({ variables: { id: post.id } });
     };
 
-<<<<<<< Updated upstream
-    if (currentUser.handle === post.postedBy.handle) {
-=======
     if (post.postedBy.handle === currentUser.handle) {
->>>>>>> Stashed changes
       return (
         <button className="delete" onClick={handleDelete}>
           X
@@ -132,8 +125,6 @@ export default function Posts() {
     }
   };
 
-<<<<<<< Updated upstream
-=======
   // like the post
   const checkLike = (post) => {
     const token =
@@ -164,39 +155,11 @@ export default function Posts() {
     }
   };
 
->>>>>>> Stashed changes
   return (
     <div className="Posts">
       <NewPost />
 
       <div>
-<<<<<<< Updated upstream
-        {posts.slice(0).reverse().map((post) => (
-          <div className="post" key={post.id}>
-            <div className="left">
-              <img
-                className="profPic"
-                src={post.postedBy.profilePicture || "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"}
-                width="40px"
-                alt={post.postedBy.username}
-              />
-            </div>
-            <div className="right">
-              {checkUser(post)}
-              <span className="handle">
-                {post.postedBy.username} |{" "}
-                <span className="handlena">{post.postedBy.handle}</span>
-                &nbsp;* <span className="date">{ new Date(post.createdAt).toLocaleString("fr-FR") }</span>
-              </span>
-              <h4>{post.title}</h4>
-              <p>{post.content}</p>
-              <img
-                src={post.postImage}
-                className="postImage"
-                alt={post.title ? "" : null}
-              />
-              <br />
-=======
         {posts
           .slice(0)
           .reverse()
@@ -235,7 +198,6 @@ export default function Posts() {
                   {post.likedBy.length} {checkLike(post)}
                 </div>
               </div>
->>>>>>> Stashed changes
             </div>
           ))}
       </div>

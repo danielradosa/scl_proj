@@ -5,13 +5,10 @@ export default function LogoutButton() {
     const navigate = useNavigate();
 
     const handleLogout = useCallback(() => {
-        localStorage.removeItem('token');
-        sessionStorage.removeItem('token');
-<<<<<<< Updated upstream
-=======
-        localStorage.removeItem("profilePicture");
-        sessionStorage.removeItem("profilePicture");
->>>>>>> Stashed changes
+        const storage = localStorage && sessionStorage;
+        storage.removeItem('token');
+        storage.removeItem('currentUserHandle');
+        storage.removeItem("profilePicture");
         navigate('/login');
     }, [navigate]);
 
