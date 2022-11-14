@@ -5,7 +5,7 @@ import Posts from "./Posts";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import IsAuthenticated from "./components/IsAuthenticated";
-import LogoutButton from "./components/logoutButton";
+import { LogoutButton } from "./components/logoutButton";
 
 function App() {
   const user = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");

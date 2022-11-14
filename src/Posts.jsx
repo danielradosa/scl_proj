@@ -6,17 +6,6 @@ import { GET_CURRENT_USER, ALL_POSTS } from "./utils/Queries";
 import { DELETE_POST, LIKE_POST } from "./utils/Mutations";
 
 export default function Posts() {
-  const {
-    data: currentUserData,
-    loading: userLoading,
-    error: userError,
-  } = useQuery(GET_CURRENT_USER);
-  const {
-    data: postsData,
-    loading: postsLoading,
-    error: postsError,
-  } = useQuery(ALL_POSTS);
-
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [deletePost] = useMutation(DELETE_POST, {
@@ -26,23 +15,30 @@ export default function Posts() {
     refetchQueries: [{ query: ALL_POSTS }],
   });
 
+  const {
+    data: currentUserData,
+    loading: userLoading,
+    error: userError,
+  } = useQuery(GET_CURRENT_USER, { fetchPolicy: "network-only" });
+  const {
+    data: postsData,
+    loading: postsLoading,
+    error: postsError,
+  } = useQuery(ALL_POSTS, { fetchPolicy: "network-only" });
+
   // return user & post data
   useEffect(() => {
     if (currentUserData) {
-      const storage = localStorage;
-      const session = sessionStorage;
       setCurrentUser(currentUserData.getCurrentUser);
-      storage.setItem("currentUserHandle", currentUser.handle);
-      storage.setItem("profilePicture", currentUser ? currentUser.profilePicture : "https://i.imgur.com/6XJ5X4A.png");
-      session.setItem("currentUserHandle", currentUser.handle);
-      session.setItem("profilePicture", currentUser ? currentUser.profilePicture : "https://i.imgur.com/6XJ5X4A.png");
+      // set current user to local and session storage
+      const storage = localStorage && sessionStorage;
+      storage.setItem("profilePicture", currentUserData.getCurrentUser.profilePicture);
+      storage.setItem("userHandle", currentUserData.getCurrentUser.handle);
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);
     }
   }, [currentUserData, postsData]);
-
-  // wait for data to load then save handle and profile picture to local storage
 
   if (postsLoading && userLoading)
     return (
@@ -86,13 +82,13 @@ export default function Posts() {
     if (post.likedBy.find((user) => user.handle === currentUser.handle)) {
       return (
         <button className="like" onClick={handleLike}>
-          /// ❤️
+           ❤️
         </button>
       );
     } else {
       return (
         <button className="like" onClick={handleLike}>
-          /// 🤍
+           🤍
         </button>
       );
     }

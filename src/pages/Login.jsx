@@ -10,23 +10,31 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
 
-  const [loginMutation] = useMutation(LOGIN_MUTATION, { refetchQueries: [{ query: GET_CURRENT_USER }] });
+  const [loginMutation] = useMutation(LOGIN_MUTATION, {
+    refetchQueries: [{ query: GET_CURRENT_USER }],
+  });
 
   // set current user to local and session storage
-  const handleLogin = useCallback(async (e, remember) => {
-    e.preventDefault();
-    const { data } = await loginMutation({
-      variables: {
-        email,
-        password,
-      },
-    });
-    if (data) {
-      const storage = remember ? localStorage : sessionStorage;
-      storage.setItem("token", data.login.token);
-      navigate("/dashboard");
-    }
-  }, [email, password, remember, loginMutation, navigate]);
+  const handleLogin = useCallback(
+    async (e, remember) => {
+      e.preventDefault();
+      const { data } = await loginMutation({
+        variables: {
+          email,
+          password,
+        },
+      });
+      if (data) {
+        const storage = remember ? localStorage : sessionStorage;
+        storage.setItem("token", data.login.token);
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+          window.location.reload();
+        }, 1000);
+      }
+    },
+    [email, password, remember, loginMutation, navigate]
+  );
 
   return (
     <div className="login">

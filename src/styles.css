@@ -14,7 +14,7 @@ html {
 body {
   font-family: 'Jost', sans-serif;
   color: orange;
-  background-color: black;
+  background-color: #F0F0F0;
 }
 
 h1 {
@@ -36,7 +36,7 @@ ul li {
   margin: 0.3em;
   width: 36px;
   height: 36px;
-  border-radius: 100%;
+  border-radius: 22px;
 }
 
 .date {
@@ -50,10 +50,11 @@ ul li {
 .post {
   display: flex;
   width: 600px;
-  background-color: black;
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(128, 128, 128, 0.5);
+  background-color: white;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 22px;
   padding: 1.5em 1em;
+  margin-top: 2em;
 }
 
 .right {
@@ -64,7 +65,7 @@ ul li {
 }
 
 .handle {
-  color: rgba(255, 255, 255, 0.3);
+  color: #828282;
 }
 
 h4 {
@@ -90,35 +91,38 @@ h4 {
 
 form {
   width: 600px;
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1);
   display: flexbox;
   margin-top: 4em;
+  border-radius: 22px;
+  background-color: white;
+  padding: 1em;
 }
 
 input {
-  background-color: rgba(255, 255, 255, 0);
-  border: 1px solid rgb(46, 46, 46);
+  background-color: white;
   padding: 0.5em 1em;
   margin-top: 0.3em;
   margin-bottom: 1em;
-  color: white;
+  color: #828282;
+  outline: none;
 }
 
 textarea {
   display: flex;
-  width: 600px;
-  background-color: black;
-  color: white;
+  width: 500px !important;
+  background-color: transparent;
+  color: black;
   font-size: 22px;
-  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.2);
   border: none;
-  padding: 1.5em 1em;
+  padding: 1em;
+  outline: none;
   outline: none;
   font-family: 'SF Pro Display', sans-serif;
 }
 
 .req {
-  opacity: 0.2;
+  opacity: 0.5;
 }
 
 .delete {
@@ -130,7 +134,7 @@ textarea {
 }
 
 button {
-  margin: 2em;
+  margin: 4em;
   padding: 0.5em 1em;
   border-radius: 22px;
   border: none;
@@ -145,16 +149,14 @@ button {
 
 .like {
   margin: 0em;
-  background-color: black;
   padding: 0em;
   font-size: 16px;
 }
 
 .logout button {
-  color: rgba(255, 166, 0, 0.2);
+  color: rgba(255, 166, 0, 0.3);
   padding: 0.5em 1em;
   background-color: rgb(0, 0, 0);
-  border: 1px solid rgb(48, 48, 48);
   border-radius: 0px;
 }
 
@@ -170,9 +172,8 @@ button {
 .posting {
   display: flex;
   margin-top: 2em;
-  width: 600px !important;
+  width: 500px !important;
   padding: 1em;
-  border: 1px solid rgb(48, 48, 48);
 }
 
 .posting img {

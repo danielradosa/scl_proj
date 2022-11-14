@@ -1,18 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from "react";
 
-export default function LogoutButton() {
-    const navigate = useNavigate();
+const LogoutButton = () => {
+  const navigate = useNavigate();
 
-    const handleLogout = useCallback(() => {
-        const storage = localStorage && sessionStorage;
-        storage.removeItem("token");
-        storage.removeItem("currentUserHandle");
-        storage.removeItem("profilePicture");
-        navigate('/login');
-    }, [navigate]);
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+    setTimeout(() => {
+      navigate("/login", { replace: true });
+    }, 1500);
+  }, [navigate]);
 
-    return (
-        <button onClick={handleLogout}>Logout</button>
-    );
-}
+  return <button onClick={handleLogout}>Logout</button>;
+};
+
+export { LogoutButton };
