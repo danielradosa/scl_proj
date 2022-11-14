@@ -29,10 +29,13 @@ export default function Posts() {
   // return user & post data
   useEffect(() => {
     if (currentUserData) {
-      const storage = localStorage && sessionStorage;
+      const storage = localStorage;
+      const session = sessionStorage;
       setCurrentUser(currentUserData.getCurrentUser);
       storage.setItem("currentUserHandle", currentUser.handle);
-      storage.setItem("profilePicture", currentUser.profilePicture);
+      storage.setItem("profilePicture", currentUser ? currentUser.profilePicture : "https://i.imgur.com/6XJ5X4A.png");
+      session.setItem("currentUserHandle", currentUser.handle);
+      session.setItem("profilePicture", currentUser ? currentUser.profilePicture : "https://i.imgur.com/6XJ5X4A.png");
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);
