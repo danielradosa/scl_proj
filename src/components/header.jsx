@@ -1,5 +1,6 @@
-// create headr component with logo and search bar
+// header component with logo and search bar
 const Header = () => {
+
   return (
     <div className="h-cont">
       <div className="header">

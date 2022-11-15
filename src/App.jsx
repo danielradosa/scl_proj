@@ -6,9 +6,9 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import IsAuthenticated from "./components/IsAuthenticated";
 import { LogoutButton } from "./components/logoutButton";
+import { Navigation } from "./components/navigation";
 
 function App() {
-  const user = localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser");
 
   return (
     <Router>
@@ -23,6 +23,7 @@ function App() {
         <Route
           element={
             <>
+              <Navigation />
               <LogoutButton />
               <IsAuthenticated />
             </>

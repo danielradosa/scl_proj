@@ -1,5 +1,5 @@
 import "../styles.css";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import moment from "moment";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "../utils/Mutations";
@@ -10,10 +10,12 @@ export default function NewPost() {
     refetchQueries: [{ query: ALL_POSTS }],
   });
 
-  const userHandle = localStorage.getItem("userHandle") || sessionStorage.getItem("userHandle");
-  const profilePicture = localStorage.getItem("profilePicture") || sessionStorage.getItem("profilePicture") || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+  const user = JSON.parse(
+    localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
+  );
 
-  console.log(userHandle, profilePicture);
+  const profilePicture = user.profilePicture || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+  const userHandle = user.handle;
 
   const createPost = useCallback(
     async (e) => {

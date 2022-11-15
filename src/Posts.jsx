@@ -32,8 +32,10 @@ export default function Posts() {
       setCurrentUser(currentUserData.getCurrentUser);
       // set current user to local and session storage
       const storage = localStorage && sessionStorage;
-      storage.setItem("profilePicture", currentUserData.getCurrentUser.profilePicture);
-      storage.setItem("userHandle", currentUserData.getCurrentUser.handle);
+      if (storage && !storage.getItem("currentUser")) {
+        localStorage.setItem("currentUser", JSON.stringify(currentUserData.getCurrentUser));
+        sessionStorage.setItem("currentUser", JSON.stringify(currentUserData.getCurrentUser));
+      }
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);
@@ -43,9 +45,10 @@ export default function Posts() {
   if (postsLoading && userLoading)
     return (
       <img
-        src="https://miro.medium.com/max/1400/1*e_Loq49BI4WmN7o9ItTADg.gif"
+        src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
         alt="loading"
         className="loader"
+        width={100}
       />
     );
   if (postsError && userError)

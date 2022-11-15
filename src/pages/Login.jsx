@@ -3,12 +3,14 @@ import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_MUTATION } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
+import { Spinner } from "../components/Spinner";
 
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [loggedInState, setLoggedInState] = useState(false);
 
   const [loginMutation] = useMutation(LOGIN_MUTATION, {
     refetchQueries: [{ query: GET_CURRENT_USER }],
@@ -18,6 +20,7 @@ export default function Login() {
   const handleLogin = useCallback(
     async (e, remember) => {
       e.preventDefault();
+      setLoggedInState(true);
       const { data } = await loginMutation({
         variables: {
           email,
@@ -39,6 +42,8 @@ export default function Login() {
   return (
     <div className="login">
       <form onSubmit={handleLogin}>
+        <div className="l">{loggedInState === true ? <Spinner/> : ""}</div>
+        <br />
         <h2>Login</h2>
         <input
           type="email"

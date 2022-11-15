@@ -154,14 +154,16 @@ button {
 }
 
 .logout button {
-  color: rgba(255, 166, 0, 0.3);
+  color: black;
   padding: 0.5em 1em;
-  background-color: rgb(0, 0, 0);
+  background-color: white;
   border-radius: 0px;
 }
 
 .loader {
   display: grid;
+  margin-top: 12em;
+  align-items: center;
 }
 
 .logout {
@@ -177,7 +179,7 @@ button {
 }
 
 .posting img {
-  border-radius: 100%;
+  border-radius: 22px;
 }
 
 .likes {
@@ -197,4 +199,53 @@ button {
 
 .header input {
   margin-top: 1em;
+}
+
+.nav-container {
+  width: 300px;
+  float: left;
+  margin-left: 8em;
+  margin-top: 4em;
+}
+
+.topNav {
+  width: 300px;
+  display: flex;
+  background-color: white;
+  padding: 2em;
+  border-radius: 22px;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.topNav img {
+  width: 96px;
+  border-radius: 22px;
+}
+
+.right h1 {
+  color: #1c1c11;
+  font-size: 24px;
+  text-align: center;
+}
+
+.right h2 {
+  font-size: 18px;
+  color: #828282;
+  text-align: center;
+}
+
+.middleNav, .bottomNav {
+  width: 300px;
+  display: grid;
+  background-color: white;
+  padding: 2em;
+  border-radius: 22px;
+  box-shadow: 4px 4px 16px rgba(0, 0, 0, 0.1);
+  margin-top: 4em;
+}
+
+.middleNav a, .bottomNav a {
+  color: #828282;
+  text-decoration: none;
+  font-size: 26px;
 }

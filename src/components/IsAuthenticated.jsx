@@ -1,19 +1,18 @@
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet, Navigate } from "react-router-dom";
 
 const useAuth = () => {
-    const user = sessionStorage.getItem("token");
-    if (user) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  
-  const IsAuthenticated = (props) => {
-    const auth = useAuth();
-  
-    return auth ? <Outlet /> : <Navigate to="/login" />;
-  };
+  const user = sessionStorage.getItem("token");
+  if (user) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
+const IsAuthenticated = (props) => {
+  const auth = useAuth();
 
-export default IsAuthenticated
+  return auth ? <Outlet /> : <Navigate to="/login" />;
+};
+
+export default IsAuthenticated;

@@ -8,6 +8,10 @@ export const GET_CURRENT_USER = gql`
       id
       handle
       profilePicture
+      username
+      email
+      followers
+      following
     }
   }
 `;
