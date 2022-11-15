@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN_MUTATION } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
 import { Spinner } from "../components/Spinner";
+import * as Yup from 'yup'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function Login() {
         <div className="l">{loggedInState === true ? <Spinner/> : ""}</div>
         <br />
         <h2>Login</h2>
-        <input
+       <input
           type="email"
           placeholder="E-mail"
           value={email}
