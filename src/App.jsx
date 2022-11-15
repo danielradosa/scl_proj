@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import IsAuthenticated from "./components/IsAuthenticated";
 import Landing from "./pages/Landing";
 import { LogoutButton } from "./components/logoutButton";
+import Profile from "./pages/Profile";
 
 function App() {
 
@@ -17,6 +18,9 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+
+
 
         {/* Protected routes */}
 
