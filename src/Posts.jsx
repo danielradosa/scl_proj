@@ -30,12 +30,6 @@ export default function Posts() {
   useEffect(() => {
     if (currentUserData) {
       setCurrentUser(currentUserData.getCurrentUser);
-      // set current user to local and session storage
-      const storage = localStorage && sessionStorage;
-      if (storage && !storage.getItem("currentUser")) {
-        localStorage.setItem("currentUser", JSON.stringify(currentUserData.getCurrentUser));
-        sessionStorage.setItem("currentUser", JSON.stringify(currentUserData.getCurrentUser));
-      }
     }
     if (postsData) {
       setPosts(postsData.getAllPosts);

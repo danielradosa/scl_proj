@@ -17,8 +17,20 @@ export const LIKE_POST = gql`
 `;
 
 export const ADD_POST = gql`
-  mutation createPost($title: String!, $content: String!, $postedBy: String!, $createdAt: String!, $postImage: String!) {
-    createPost(title: $title, content: $content, postedBy: $postedBy, createdAt: $createdAt, postImage: $postImage) {
+  mutation createPost(
+    $title: String!
+    $content: String!
+    $postedBy: String!
+    $createdAt: String!
+    $postImage: String!
+  ) {
+    createPost(
+      title: $title
+      content: $content
+      postedBy: $postedBy
+      createdAt: $createdAt
+      postImage: $postImage
+    ) {
       id
       title
       content
@@ -36,13 +48,20 @@ export const LOGIN_MUTATION = gql`
     login(email: $email, password: $password) {
       email
       token
+      allUserInfo {
+        id
+        username
+        email
+        profilePicture
+        handle
+      }
     }
   }
 `;
 
 export default {
-    DELETE_POST,
-    LIKE_POST,
-    ADD_POST,
-    LOGIN_MUTATION
-}
+  DELETE_POST,
+  LIKE_POST,
+  ADD_POST,
+  LOGIN_MUTATION,
+};

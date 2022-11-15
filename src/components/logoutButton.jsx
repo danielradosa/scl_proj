@@ -8,8 +8,8 @@ const LogoutButton = () => {
 
   const handleLogout = useCallback(() => {
     setLoggedOutState(true);
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
+    localStorage.clear();
+    sessionStorage.clear();
     setTimeout(() => {
       navigate("/login", { replace: true });
     }, 1500);

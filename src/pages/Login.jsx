@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { LOGIN_MUTATION } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
 import { Spinner } from "../components/Spinner";
-import * as Yup from 'yup'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -31,6 +30,7 @@ export default function Login() {
       if (data) {
         const storage = remember ? localStorage : sessionStorage;
         storage.setItem("token", data.login.token);
+        storage.setItem("currentUser", JSON.stringify(data.login.allUserInfo));
         setTimeout(() => {
           navigate("/dashboard", { replace: true });
           window.location.reload();

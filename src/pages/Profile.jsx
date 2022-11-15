@@ -2,8 +2,7 @@ import { useQuery } from '@apollo/client'
 import React from 'react'
 import { GET_CURRENT_USER } from '../utils/Queries'
 
-export default function Profile
-() {
+export default function Profile () {
     const{loading,error,data} =useQuery(GET_CURRENT_USER)
     if(loading) return <h2>Profile is loading</h2>
     if(error){

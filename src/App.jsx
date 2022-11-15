@@ -8,9 +8,9 @@ import IsAuthenticated from "./components/IsAuthenticated";
 import Landing from "./pages/Landing";
 import { LogoutButton } from "./components/logoutButton";
 import Profile from "./pages/Profile";
+import { Navigation } from "./components/Navigation";
 
 function App() {
-
   return (
     <Router>
       <Routes>
@@ -19,8 +19,6 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-
-
 
         {/* Protected routes */}
 
