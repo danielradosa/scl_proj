@@ -10,15 +10,15 @@ const LogoutButton = () => {
     setLoggedOutState(true);
     localStorage.clear();
     sessionStorage.clear();
-    setTimeout(() => {
-      navigate("/login", { replace: true });
-    }, 1500);
+    navigate("/login", { replace: true });
   }, [navigate]);
 
   return (
     <div>
       <div className="l">{loggedOutState === true ? <Spinner /> : ""}</div>
-      <button onClick={handleLogout} className="logout">Logout</button>
+      <button onClick={handleLogout} className="logout">
+        Logout
+      </button>
     </div>
   );
 };

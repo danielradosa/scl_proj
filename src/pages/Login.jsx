@@ -31,10 +31,9 @@ export default function Login() {
         const storage = remember ? localStorage : sessionStorage;
         storage.setItem("token", data.login.token);
         storage.setItem("currentUser", JSON.stringify(data.login.allUserInfo));
-        setTimeout(() => {
-          navigate("/dashboard", { replace: true });
-          window.location.reload();
-        }, 1000);
+
+        navigate("/dashboard", { replace: true });
+        window.location.reload();
       }
     },
     [email, password, remember, loginMutation, navigate]
@@ -43,10 +42,10 @@ export default function Login() {
   return (
     <div className="login">
       <form onSubmit={handleLogin}>
-        <div className="l">{loggedInState === true ? <Spinner/> : ""}</div>
+        <div className="l">{loggedInState === true ? <Spinner /> : ""}</div>
         <br />
         <h2>Login</h2>
-       <input
+        <input
           type="email"
           placeholder="E-mail"
           value={email}
