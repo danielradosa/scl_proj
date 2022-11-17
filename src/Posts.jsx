@@ -66,7 +66,7 @@ export default function Posts() {
       );
     }
   };
-
+  
   // like the post
   const checkLike = (post) => {
     const token =
@@ -91,11 +91,20 @@ export default function Posts() {
     }
   };
 
+  // show button when more than 10 posts are created
+  const showMore = () => {
+    if (posts.length > 10) {
+      return <button className="more">Show More</button>;
+    }
+  };
+
+
   return (
     <div className="Posts">
       <NewPost />
 
       <div>
+        {showMore()}
         {posts
           .slice(0)
           .reverse()

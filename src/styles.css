@@ -55,6 +55,7 @@ ul li {
   border-radius: 22px;
   padding: 1.5em 1em;
   margin-top: 2em;
+  margin-bottom: 4em;
 }
 
 .right {
@@ -249,3 +250,4 @@ button {
   text-decoration: none;
   font-size: 26px;
 }
+

@@ -11,6 +11,9 @@ import Profile from "./pages/Profile";
 import { Navigation } from "./components/Navigation";
 
 function App() {
+  const user = JSON.parse(sessionStorage.getItem("currentUser"));
+  const handle = user.handle;
+
   return (
     <Router>
       <Routes>
@@ -18,7 +21,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path={`/${handle.slice(1)}`} element={<Profile />} />
 
         {/* Protected routes */}
 
