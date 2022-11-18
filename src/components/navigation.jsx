@@ -7,7 +7,7 @@ const Navigation = () => {
   
   const profilePicture = user.profilePicture;
   const userHandle = user.handle;
-  const userName = user.username;
+  const userName = user.username; 
 
   return (
     <div className="nav-container">
@@ -21,8 +21,9 @@ const Navigation = () => {
 
       <div className="middleNav">
         <Link to="/dashboard">News feed</Link>
-        <Link to={`/${userHandle.slice(1)}`}>My profile</Link>
+        {/* <Link to={`/${userHandle.slice(1)}`}>My profile</Link> */}
         <Link to="/discover">Discover</Link>
+        <Link to="/profile">Profile</Link>
       </div>
 
       <div className="bottomNav">
