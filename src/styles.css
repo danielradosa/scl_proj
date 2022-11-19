@@ -59,6 +59,12 @@ ul li {
   padding: 1.5em 1em;
   margin-top: 2em;
   margin-bottom: 4em;
+  cursor: pointer;
+  transition: .3s ease-in-out;
+}
+
+.post:hover {
+  filter: saturate(1.2);
 }
 
 .right {
@@ -166,7 +172,7 @@ button {
 
 .loader {
   display: grid;
-  margin-top: 12em;
+  margin: 2em;
   align-items: center;
 }
 
@@ -253,4 +259,3 @@ button {
   text-decoration: none;
   font-size: 26px;
 }
-

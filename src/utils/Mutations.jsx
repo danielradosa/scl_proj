@@ -59,9 +59,36 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
+
+export const SIGNUP_MUTATION = gql`
+  mutation register(
+    $email: String!
+    $password: String!
+    $handle: String!
+    $username: String!
+    $role: String!
+  ) {
+    register(
+      email: $email
+      password: $password
+      handle: $handle
+      username: $username
+      role: $role
+    ) {
+      id
+      email
+      handle
+      username
+      password
+      role
+    }
+  }
+`;
+
 export default {
   DELETE_POST,
   LIKE_POST,
   ADD_POST,
   LOGIN_MUTATION,
+  SIGNUP_MUTATION,
 };

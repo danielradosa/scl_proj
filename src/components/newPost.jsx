@@ -40,7 +40,7 @@ export default function NewPost() {
 
       // save input to variables
       const title = e.target.elements.title.value;
-      const content = e.target.elements.content.value;
+      const content = e.target.elements.content.value.replace(/\r?\n/g, "<br />");
       const postedBy = userHandle;
       const createdAt = moment().format("MM-DD-YYYY hh:mm a");
       const postImage = image;

@@ -1,30 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { useMutation, gql } from "@apollo/client";
-
-const SIGNUP_MUTATION = gql`
-  mutation register(
-    $email: String!
-    $password: String!
-    $handle: String!
-    $username: String!
-    $role: String!
-  ) {
-    register(
-      email: $email
-      password: $password
-      handle: $handle
-      username: $username
-      role: $role
-    ) {
-      id
-      email
-      handle
-      username
-      password
-      role
-    }
-  }
-`;
+import { useMutation} from "@apollo/client";
+import { SIGNUP_MUTATION } from "../utils/Mutations";
 
 const Signup = () => {
   const [email, setEmail] = useState("");

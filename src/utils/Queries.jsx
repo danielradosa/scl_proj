@@ -38,7 +38,30 @@ export const ALL_POSTS = gql`
   }
 `;
 
+export const POST_BY_ID = gql`
+  query getPostById($id: ID!) {
+    getPostById(id: $id) {
+      id
+      title
+      content
+      postImage
+      postedBy {
+        id
+        username
+        profilePicture
+        handle
+      }
+      createdAt
+      likedBy {
+        id
+        handle
+      }
+    }
+  }
+`;
+
 export default {
   GET_CURRENT_USER,
   ALL_POSTS,
+  POST_BY_ID,
 };
