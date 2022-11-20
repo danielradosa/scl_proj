@@ -27,10 +27,11 @@ const Signup = () => {
   );
 
   return (
-    <div className="login">
-      <h3>Signup</h3>
-      <form onSubmit={handleSubmit}>
+    <div className="mx-auto w-96 backdrop-blur-xl bg-white p-6 mt-12 rounded-xl shadow-lg">
+      <h3 className="text-center text-3xl pb-4">Signup</h3>
+      <form onSubmit={handleSubmit} className="grid">
         <input
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="email"
           placeholder="E-mail"
           value={email}
@@ -38,6 +39,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
           placeholder="Password"
           value={password}
@@ -45,6 +47,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
           placeholder="Confirm Password"
           value={passwordC}
@@ -52,6 +55,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="text"
           placeholder="Handle"
           value={handle}
@@ -59,13 +63,14 @@ const Signup = () => {
         />{" "}
         <br />
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />{" "}
         <br />
-        <button type="submit">Signup</button>
+        <button type="submit" className="text-slate-700 rounded-lg border-2 border-slate-700 pt-2 pb-2">Create account</button>
       </form>
     </div>
   );

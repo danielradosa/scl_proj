@@ -14,9 +14,9 @@ const LogoutButton = () => {
   }, [navigate]);
 
   return (
-    <div>
-      <div className="l">{loggedOutState === true ? <Spinner /> : ""}</div>
-      <button onClick={handleLogout} className="logout">
+    <div className="logout">
+      {loggedOutState === true ? <Spinner /> : ""}
+      <button onClick={handleLogout} className="bg-white rounded-lg text-slate-400 pl-4 pr-4 mt-6 mr-6 shadow-sm">
         Logout
       </button>
     </div>

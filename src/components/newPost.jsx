@@ -40,7 +40,7 @@ export default function NewPost() {
 
       // save input to variables
       const title = e.target.elements.title.value;
-      const content = e.target.elements.content.value.replace(/\r?\n/g, "<br />");
+      const content = e.target.elements.content.value;
       const postedBy = userHandle;
       const createdAt = moment().format("MM-DD-YYYY hh:mm a");
       const postImage = image;
@@ -77,19 +77,21 @@ export default function NewPost() {
   );
 
   return (
-    <div className="newPost">
+    <div className="w-full bg-white shadow-lg rounded-lg p-4 mt-8">
       <form onSubmit={createPost}>
-        <h2>Create new post</h2>
+        <h2 className="text-2xl p-2">Create new post</h2>
         <input
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200 ml-2 mt-2"
           type="text"
           placeholder="Title"
           name="title"
           maxLength={32}
         />{" "}
-        <span className="req"> * not required</span> <br />
-        <div className="posting">
-          <img src={profilePicture} alt="prof_pic" width="80px" height="80" />
+        <span className="font-thin"> * not required</span> <br />
+        <div className="flex ml-2 ">
+          <img src={profilePicture} alt="prof_pic" className="rounded-lg mt-4 ml-0 prof" />
           <textarea
+            className="w-full p-4 text-xl border-2 m-4 rounded-lg"
             name="content"
             rows="5"
             cols="33"
@@ -97,11 +99,11 @@ export default function NewPost() {
             maxLength={280}
           ></textarea>
         </div>
-        <div className="uploadImage">
-          <label htmlFor="image">Upload image</label> {""}
-          <input type="file" name="image" id="image" accept="image/*" />
+        <div className="text-sm mt-2">
+          <label htmlFor="image">Upload image: </label>
+          <input type="file" name="image" id="image" accept="image/*" className="rounded-lg bg-white text-slate-400 outline-none" />
         </div>
-        <button type="submit">Create Post</button>
+        <button type="submit" className="text-slate-700 pl-2 pr-2 mt-4 rounded-lg border-2 pt-2 pb-2">Create Post</button>
       </form>
     </div>
   );

@@ -40,12 +40,12 @@ export default function Login() {
   );
 
   return (
-    <div className="login">
-      <form onSubmit={handleLogin}>
+    <div className="mx-auto w-96 backdrop-blur-xl bg-white p-6 mt-12 rounded-xl shadow-lg">
+      <form onSubmit={handleLogin} className="grid">
         <div className="l">{loggedInState === true ? <Spinner /> : ""}</div>
-        <br />
-        <h2>Login</h2>
+        <h2  className="text-center text-3xl pb-4">Login</h2>
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="email"
           placeholder="E-mail"
           value={email}
@@ -53,21 +53,22 @@ export default function Login() {
         />{" "}
         <br />
         <input
+        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />{" "}
-        <br />
         <label>
           <input
+          className="mt-5"
             type="checkbox"
             checked={remember}
             onChange={(e) => setRemember(e.target.checked)}
           />{" "}
           Remember me
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" className="text-slate-700 rounded-lg border-2 border-slate-700 pt-2 pb-2 mt-4">Sign in</button>
       </form>
     </div>
   );

@@ -79,31 +79,31 @@ export default function Posts() {
     if (post.likedBy.find((user) => user.handle === currentUser.handle)) {
       return (
         <button className="like" onClick={handleLike}>
-          ❤️
+          🧡
         </button>
       );
     } else {
       return (
         <button className="like" onClick={handleLike}>
-          🤍
+          🖤
         </button>
       );
     }
   };
 
   return (
-    <div className="Posts">
+    <div className="grid posts w-3/12">
       <NewPost />
 
-      <div className="allposts">
+      <div className="mt-2">
         {posts
           .slice(0)
           .reverse()
           .map((post) => (
-            <div className="post" key={post.id}>
-              <div className="left">
+            <div className="bg-white p-6 rounded-lg shadow-lg mt-8" key={post.id}>
+              <div>
                 <img
-                  className="profPic"
+                  className="rounded-lg left-0 ml-0"
                   src={
                     post.postedBy.profilePicture ||
                     "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
@@ -112,9 +112,9 @@ export default function Posts() {
                   alt={post.postedBy.username}
                 />
               </div>
-              <div className="right">
+              <div className="mt-4">
                 {checkUser(post)}
-                <span className="handle">
+                <span className="text-slate-400">
                   {post.postedBy.username} |{" "}
                   <span className="handlena">{post.postedBy.handle}</span>
                   &nbsp;*{" "}
@@ -122,15 +122,15 @@ export default function Posts() {
                     {new Date(post.createdAt).toLocaleString("fr-FR")}
                   </span>
                 </span>
-                <h4>{post.title}</h4>
-                <p>{post.content}</p>
+                <h4 className="mt-2 font-bold text-xl">{post.title}</h4>
+                <p className="text-slate-700 pb-4">{post.content}</p>
                 <img
                   src={post.postImage}
-                  className="postImage"
+                  className="rounded-lg"
                   alt={post.title ? "" : null}
                 />
                 <br />
-                <div className="likes">
+                <div className="text-slate-500">
                   {post.likedBy.length} {checkLike(post)}
                 </div>
               </div>
