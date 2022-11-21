@@ -1,9 +1,11 @@
 import React from "react";
 
+
 export default function Profile() {
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
+
 
   return (
     <div className="mt-8">
@@ -25,5 +27,5 @@ export default function Profile() {
         </blockquote>
       </div>
     </div>
-  );
+  )
 }

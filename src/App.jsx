@@ -9,6 +9,8 @@ import Landing from "./pages/Landing";
 import { LogoutButton } from "./components/logoutButton";
 import Profile from "./pages/Profile";
 import { Navigation } from "./components/navigation";
+import ProfileSettings from "./components/profileSettings";
+
 
 function App() {
 
@@ -20,6 +22,9 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<ProfileSettings />} />
+
+
 
         {/* Protected routes */}
 

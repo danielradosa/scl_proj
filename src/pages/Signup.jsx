@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useMutation} from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { SIGNUP_MUTATION } from "../utils/Mutations";
 
 const Signup = () => {
@@ -39,7 +39,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
-        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
           placeholder="Password"
           value={password}
@@ -47,7 +47,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
-        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
           placeholder="Confirm Password"
           value={passwordC}
@@ -55,7 +55,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
-        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="text"
           placeholder="Handle"
           value={handle}
@@ -63,7 +63,7 @@ const Signup = () => {
         />{" "}
         <br />
         <input
-        className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
+          className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="text"
           placeholder="Username"
           value={username}

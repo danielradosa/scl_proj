@@ -85,10 +85,35 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
+export const UPDATE_PROFILE = gql`
+mutation updateProfile(
+  $username: String!
+  $email: String!
+  $handle: String!
+  $profilePicture: String!
+  $bio: String!
+){
+  updateProfile(
+    username:$username
+    email:$email
+    handle:$handle
+    profilePicture:$profilePicture
+    bio:$bio
+  ){
+    username
+    email
+    handle
+    profilePicture
+    bio
+  }
+}
+`;
+
 export default {
   DELETE_POST,
   LIKE_POST,
   ADD_POST,
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
+  UPDATE_PROFILE,
 };
