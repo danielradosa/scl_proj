@@ -92,7 +92,7 @@ export default function Posts() {
   };
 
   return (
-    <div className="grid posts w-3/12">
+    <div className="posts mt-0">
       <NewPost />
 
       <div className="mt-2">
@@ -100,7 +100,7 @@ export default function Posts() {
           .slice(0)
           .reverse()
           .map((post) => (
-            <div className="bg-white p-6 rounded-lg shadow-lg mt-8" key={post.id}>
+            <div className="bg-white p-6 rounded-lg shadow-lg mt-8 mb-4" key={post.id}>
               <div>
                 <img
                   className="rounded-lg left-0 ml-0"

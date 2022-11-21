@@ -40,6 +40,9 @@ root.render(
   <ApolloProvider client={client}>
     <React.StrictMode>
       <Header />
+      <br />
+      <br />
+      <br />
       <App />
     </React.StrictMode>
   </ApolloProvider>

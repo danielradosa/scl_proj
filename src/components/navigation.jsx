@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import { ReactComponent as Discover } from "./icons/discover.svg";
+import { ReactComponent as Feed } from "./icons/feed.svg";
+import { ReactComponent as Profile } from "./icons/profile.svg";
+import { ReactComponent as Settings } from "./icons/settings.svg";
 
 const Navigation = () => {
   const user = JSON.parse(
@@ -19,15 +23,14 @@ const Navigation = () => {
         </div>
       </div>
 
-      <div className="grid w-72 bg-white p-6 mt-8 shadow-lg rounded-lg">
-        <Link to="/dashboard" className="text-lg text-slate-500">News feed</Link>
-        {/* <Link to={`/${userHandle.slice(1)}`}>My profile</Link> */}
-        <Link to="/discover" className="text-lg text-slate-500">Discover</Link>
-        <Link to="/profile" className="text-lg text-slate-500">Profile</Link>
+      <div className="w-72 bg-white p-6 mt-8 shadow-lg rounded-lg relative grid text-left">
+        <Link to="/dashboard" className="text-lg text-slate-700 links ml-0"><Feed className="ico" />News feed</Link>
+        <Link to="/discover" className="text-lg text-slate-700 links ml-0 mt-2"><Discover className="ico"/> Discover</Link>
+        <Link to="/profile" className="text-lg text-slate-700 links ml-0 mt-2"><Profile className="ico" />Profile</Link>
       </div>
 
-      <div className="grid w-72 bg-white p-6 mt-8 shadow-lg rounded-lg">
-        <Link to="/settings" className="text-lg text-slate-500">Settings</Link>
+      <div className="w-72 bg-white p-6 mt-8 shadow-lg rounded-lg relative grid">
+        <Link to="/settings" className="text-lg text-slate-700 links ml-0"><Settings className="ico" />Settings</Link>
       </div>
     </div>
   );

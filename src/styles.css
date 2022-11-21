@@ -31,6 +31,7 @@ body {
 
 .posts {
   float: left;
+  width: 600px;
 }
 
 .logout {
@@ -42,6 +43,10 @@ body {
   height: 80px;
 }
 
+.profile {
+  width: 600px;
+}
+
 .delete {
   background-color: rgba(0, 0, 255, 0.1);
   color: gray;
@@ -49,4 +54,15 @@ body {
   border-radius: 6px;
   float: right;
   margin-top: -3.5em;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.ico {
+  padding: .2em;
+  margin-right: .5em;
 }

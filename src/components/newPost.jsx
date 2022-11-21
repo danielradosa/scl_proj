@@ -77,7 +77,7 @@ export default function NewPost() {
   );
 
   return (
-    <div className="w-full bg-white shadow-lg rounded-lg p-4 mt-8">
+    <div className="bg-white shadow-lg rounded-lg p-4 mt-8">
       <form onSubmit={createPost}>
         <h2 className="text-2xl p-2">Create new post</h2>
         <input
