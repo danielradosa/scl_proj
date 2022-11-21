@@ -60,8 +60,26 @@ export const POST_BY_ID = gql`
   }
 `;
 
+export const SEARCH_POSTS = gql`
+  query searchPosts($search: String!) {
+    searchPosts(search: $search) {
+      id
+      title
+      content
+      postImage
+      postedBy {
+        id
+        username
+        profilePicture
+        handle
+      }
+    }
+  }
+`;
+
 export default {
   GET_CURRENT_USER,
   ALL_POSTS,
   POST_BY_ID,
+  SEARCH_POSTS,
 };
