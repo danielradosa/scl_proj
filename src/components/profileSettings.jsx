@@ -5,44 +5,36 @@ import { GET_CURRENT_USER } from "../utils/Queries";
 
 export default function Profile() {
   const { loading, data } = useQuery(GET_CURRENT_USER);
+
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
-  const [activeEditField, setActiveEditField] = React.useState(""); //Push the field user wants to edit
+  const userData = data.getCurrentUser;
 
-  const [username, setUsername] = React.useState(user.username || "");
-  const [userEmail, setUserEmail] = React.useState(user.email || "");
+  const [activeEditField, setActiveEditField] = React.useState("");
+
+  const [username, setUsername] = React.useState(userData.username || "");
+  const [userEmail, setUserEmail] = React.useState(userData.email || "");
 
   const [updateUsername] = useMutation(
-    UPDATE_USERNAME, { refetchQueries: ["GET_CURRENT_USER"] } 
+    UPDATE_USERNAME, { refetchQueries: ["getCurrentUser"] } 
   );
   const [updateEmail] = useMutation(
-    UPDATE_EMAIL, { refetchQueries: ["GET_CURRENT_USER"] }
+    UPDATE_EMAIL, { refetchQueries: ["getCurrentUser"] }
   );
 
   const handleSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
       if (activeEditField === "username") {
-        updateUsername({
-          variables: {
-            id: user.id,
-            username: username,
-            token: user.token,
-          },
-        });
+        await updateUsername({ variables: { id: userData.id, username, token: localStorage.getItem('token') || sessionStorage.getItem('token') } });
       } else if (activeEditField === "email") {
-        updateEmail({
-          variables: {
-            id: user.id,
-            email: userEmail,
-            token: user.token,
-          },
-        });
+        await updateEmail({ variables: { id: userData.id, email: userEmail, token: localStorage.getItem('token') || sessionStorage.getItem('token') } });
       }
+      setActiveEditField("");
     },
-    [activeEditField, updateUsername, updateEmail, user, username, userEmail]
+    [activeEditField, username, userEmail, updateUsername, updateEmail]
   );
 
   return (
