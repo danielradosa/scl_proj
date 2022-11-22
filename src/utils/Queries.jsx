@@ -13,6 +13,7 @@ export const GET_CURRENT_USER = gql`
       followers
       following
       bio {
+        id
         body
         website
         location

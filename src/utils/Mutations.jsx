@@ -84,11 +84,20 @@ export const SIGNUP_MUTATION = gql`
   }
 `;
 
-export const UPDATE_PROFILE = gql`
-  mutation updateProfile($username: String!, $profilePicture: String!) {
-    updateProfile(username: $username, profilePicture: $profilePicture) {
+export const UPDATE_USERNAME = gql`
+  mutation updateUsername($id: ID!, $username: String!, $token: String!) {
+    updateUsername(id: $id, username: $username, token: $token) {
+      id
       username
-      profilePicture
+    }
+  }
+`;
+
+export const UPDATE_EMAIL = gql`
+  mutation updateEmail($id: ID!, $email: String!, $token: String!) {
+    updateEmail(id: $id, email: $email, token: $token) {
+      id
+      email
     }
   }
 `;
@@ -121,6 +130,7 @@ export default {
   ADD_POST,
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
-  UPDATE_PROFILE,
   CREATE_UPDATE_BIO,
+  UPDATE_USERNAME,
+  UPDATE_EMAIL,
 };
