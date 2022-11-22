@@ -4,38 +4,68 @@ import { UPDATE_USERNAME, UPDATE_EMAIL } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
 
 export default function Profile() {
-  const { loading, data } = useQuery(GET_CURRENT_USER);
+  const { refetch } = useQuery(GET_CURRENT_USER);
 
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
-  const userData = data.getCurrentUser;
-
   const [activeEditField, setActiveEditField] = React.useState("");
 
-  const [username, setUsername] = React.useState(userData.username || "");
-  const [userEmail, setUserEmail] = React.useState(userData.email || "");
+  const [username, setUsername] = React.useState(user.username || "");
+  const [userEmail, setUserEmail] = React.useState(user.email || "");
 
-  const [updateUsername] = useMutation(
-    UPDATE_USERNAME, { refetchQueries: ["getCurrentUser"] } 
-  );
-  const [updateEmail] = useMutation(
-    UPDATE_EMAIL, { refetchQueries: ["getCurrentUser"] }
-  );
+  const [updateUsername] = useMutation(UPDATE_USERNAME, {
+    refetchQueries: [{ query: GET_CURRENT_USER }],
+  });
+  const [updateEmail] = useMutation(UPDATE_EMAIL, {
+    refetchQueries:  [{ query: GET_CURRENT_USER }],
+  });
 
   const handleSubmit = useCallback(
     async (e) => {
       e.preventDefault();
       if (activeEditField === "username") {
-        await updateUsername({ variables: { id: userData.id, username, token: localStorage.getItem('token') || sessionStorage.getItem('token') } });
+        await updateUsername({
+          variables: {
+            id: user.id,
+            username,
+            token: localStorage.getItem("token") || sessionStorage.getItem("token"),
+          },
+        }).then(() => {
+          refetch();
+          window.location.reload();
+        });
       } else if (activeEditField === "email") {
-        await updateEmail({ variables: { id: userData.id, email: userEmail, token: localStorage.getItem('token') || sessionStorage.getItem('token') } });
+        await updateEmail({
+          variables: {
+            id: user.id,
+            email: userEmail,
+            token: localStorage.getItem("token") || sessionStorage.getItem("token"),
+          },
+        }).then(() => {
+          refetch();
+          window.location.reload();
+        });
       }
       setActiveEditField("");
     },
-    [activeEditField, username, userEmail, updateUsername, updateEmail]
+    [activeEditField, username, userEmail, updateUsername, updateEmail, refetch]
   );
+
+  // after user updates their username or email, update the currentUser in localStorage
+  React.useEffect(() => {
+    const currentUser = JSON.parse(
+      localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
+    );
+    if (activeEditField === "username") {
+      currentUser.username = username;
+    } else if (activeEditField === "email") {
+      currentUser.email = userEmail;
+    }
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }, [activeEditField, username, userEmail]);
 
   return (
     <div className="overflow-hidden bg-white shadow-lg mt-8 w-1/3 float-left sm:rounded-lg">
@@ -49,16 +79,17 @@ export default function Profile() {
           {activeEditField == "username" ? (
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt className="text-sm font-medium text-gray-500">Username</dt>
-              <form action="">
+              <form action="" className="flex">
                 <input
                   type="text"
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-center"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                 />
-                <button type="submit" onClick={handleSubmit}>
+                <button type="submit" onClick={handleSubmit} className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
                   Save
                 </button>
-                <button onClick={() => setActiveEditField("")}>Cancel</button>
+                <button onClick={() => setActiveEditField("")} className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">Cancel</button>
               </form>
             </div>
           ) : (
@@ -81,17 +112,18 @@ export default function Profile() {
 
           {activeEditField == "email" ? (
             <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Email</dt>
-              <form action="">
+              <dt className="text-sm font-medium text-gray-500">E-mail</dt>
+              <form action="" className="flex">
                 <input
-                  type="text"
+                  type="email"
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-center"
                   value={userEmail}
                   onChange={(e) => setUserEmail(e.target.value)}
                 />
-                <button type="submit" onClick={handleSubmit}>
+                <button type="submit" onClick={handleSubmit} className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
                   Save
                 </button>
-                <button onClick={() => setActiveEditField("")}>Cancel</button>
+                <button onClick={() => setActiveEditField("")} className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">Cancel</button>
               </form>
             </div>
           ) : (
@@ -99,7 +131,7 @@ export default function Profile() {
               className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
               onClick={() => setActiveEditField("email")}
             >
-              <dt className="text-sm font-medium text-gray-500">Email</dt>
+              <dt className="text-sm font-medium text-gray-500">E-mail</dt>
               <dd className="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">
                 {userEmail}
               </dd>
@@ -111,15 +143,8 @@ export default function Profile() {
               </button>
             </div>
           )}
-          
 
-          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt className="text-sm font-medium text-gray-500">Bio</dt>
-            <dd className="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">
-              {user.bio}
-            </dd>
-            <button className="sm:col-span-1 text-right">Edit</button>
-          </div>
+          
         </dl>
       </div>
     </div>
