@@ -21,8 +21,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/settings" element={<ProfileSettings />} />
+
 
         {/* Protected routes */}
 
@@ -36,6 +35,8 @@ function App() {
           }
         >
           <Route element={<Posts />} path="/dashboard" exact />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/settings" element={<ProfileSettings />} />
         </Route>
       </Routes>
     </Router>

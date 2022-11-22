@@ -66,7 +66,7 @@ export default function Profile() {
             </div>
           }
 
-          {activeEditField == 'userEmail' ? (
+          {/*           {activeEditField == 'userEmail' ? (
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Email Address</dt>
               <form action="">
@@ -90,9 +90,9 @@ export default function Profile() {
               <dd class="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">{userEmail}</dd>
               <button class="sm:col-span-1 text-right" onClick={() => setActiveEditField("userEmail")} >Edit</button>
             </div>
-          }
+          } */}
 
-          {activeEditField == 'userHandle' ? (
+          {/* {activeEditField == 'userHandle' ? (
             <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
               <dt class="text-sm font-medium text-gray-500">Handle</dt>
               <form action="">
@@ -122,7 +122,7 @@ export default function Profile() {
             <dt class="text-sm font-medium text-gray-500">Bio</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">{user.bio}</dd>
             <button class="sm:col-span-1 text-right">Edit</button>
-          </div>
+          </div> */}
 
         </dl>
       </div>
