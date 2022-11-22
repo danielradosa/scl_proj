@@ -12,6 +12,13 @@ export const GET_CURRENT_USER = gql`
       email
       followers
       following
+      bio {
+        body
+        website
+        location
+      }
+      role
+      artist
     }
   }
 `;

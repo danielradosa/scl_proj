@@ -19,6 +19,8 @@ const Signup = () => {
         signupMutation({
           variables: { email, password, handle: "@" + handle, username, role },
         });
+
+        window.location.href = "/login";
       } else {
         alert("Passwords do not match");
       }

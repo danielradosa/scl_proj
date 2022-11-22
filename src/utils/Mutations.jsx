@@ -59,7 +59,6 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
-
 export const SIGNUP_MUTATION = gql`
   mutation register(
     $email: String!
@@ -86,27 +85,34 @@ export const SIGNUP_MUTATION = gql`
 `;
 
 export const UPDATE_PROFILE = gql`
-mutation updateProfile(
-  $username: String!
-  $email: String!
-  $handle: String!
-  $profilePicture: String!
-  $bio: String!
-){
-  updateProfile(
-    username:$username
-    email:$email
-    handle:$handle
-    profilePicture:$profilePicture
-    bio:$bio
-  ){
-    username
-    email
-    handle
-    profilePicture
-    bio
+  mutation updateProfile($username: String!, $profilePicture: String!) {
+    updateProfile(username: $username, profilePicture: $profilePicture) {
+      username
+      profilePicture
+    }
   }
-}
+`;
+
+export const CREATE_UPDATE_BIO = gql`
+  mutation createOrUpdateBio(
+    $bioBy: String!
+    $body: String!
+    $website: String!
+    $location: String!
+  ) {
+    createOrUpdateBio(
+      bioBy: $bioBy
+      body: $body
+      website: $website
+      location: $location
+    ) {
+      id
+      bioBy
+      body
+      website
+      location
+    }
+  }
 `;
 
 export default {
@@ -116,4 +122,5 @@ export default {
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
   UPDATE_PROFILE,
+  CREATE_UPDATE_BIO,
 };

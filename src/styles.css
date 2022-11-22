@@ -23,6 +23,7 @@ body {
 .loader {
   margin-top: 2em;
   margin-bottom: 2em;
+  transition: .3s ease-in-out;
 }
 
 .navigation {
