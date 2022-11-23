@@ -54,6 +54,20 @@ export const LOGIN_MUTATION = gql`
         email
         profilePicture
         handle
+        followers
+        following 
+        bio {
+          id
+          body
+          website
+          location
+        }
+        posts {
+          id
+          title
+          content
+          postImage
+        }
       }
     }
   }

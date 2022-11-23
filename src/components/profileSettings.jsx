@@ -122,14 +122,14 @@ export default function Profile() {
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           <div className="text-sm mt-2">
-          <form onSubmit={handleImageUpload}>
+          <form onSubmit={handleImageUpload} className="flex text-center">
               <label htmlFor="image">Upload or change profile picture: </label>
               <input
                 type="file"
                 name="image"
                 id="image"
                 accept="image/*"
-                className="rounded-lg bg-white text-slate-400 outline-none"
+                className="rounded-lg bg-white text-slate-400 outline-none focus:ring-2 focus:ring-slate-400 focus:border-transparent"
               />
               <button
                 className="bg-slate-400 text-white rounded-lg px-2 py-1 ml-2"
