@@ -124,6 +124,15 @@ export const CREATE_UPDATE_BIO = gql`
   }
 `;
 
+export const CREATE_UPDATE_PROFILE_PICTURE = gql`
+  mutation uploadProfilePicture($profilePicture: String!, $id: ID!) {
+    uploadProfilePicture(profilePicture: $profilePicture, id: $id) {
+      id
+      profilePicture
+    }
+  }
+`;
+
 export default {
   DELETE_POST,
   LIKE_POST,
@@ -133,4 +142,5 @@ export default {
   CREATE_UPDATE_BIO,
   UPDATE_USERNAME,
   UPDATE_EMAIL,
+  CREATE_UPDATE_PROFILE_PICTURE,
 };

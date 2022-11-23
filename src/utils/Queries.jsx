@@ -85,9 +85,32 @@ export const SEARCH_POSTS = gql`
   }
 `;
 
+export const GET_USER_POSTS = gql`
+  query getAllPostsByUser($handle: String!) {
+    getAllPostsByUser(handle: $handle) {
+      id
+      title
+      content
+      postImage
+      postedBy {
+        id
+        username
+        profilePicture
+        handle
+      }
+      createdAt
+      likedBy {
+        id
+        handle
+      }
+    }
+  }
+`;
+
 export default {
   GET_CURRENT_USER,
   ALL_POSTS,
   POST_BY_ID,
   SEARCH_POSTS,
+  GET_USER_POSTS,
 };
