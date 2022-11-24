@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   UPDATE_USERNAME,
@@ -8,7 +8,9 @@ import {
 import { GET_CURRENT_USER } from "../utils/Queries";
 
 export default function Profile() {
-  const { refetch } = useQuery(GET_CURRENT_USER);
+  const { refetch, data: uData } = useQuery(GET_CURRENT_USER, {
+    refetchQueries: [{ query: GET_CURRENT_USER }],
+  });
 
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
@@ -44,9 +46,7 @@ export default function Profile() {
             token:
               localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
-        }).then(() => {
-          refetch();
-          window.location.reload();
+          refetchQueries: [{ query: GET_CURRENT_USER }],
         });
       } else if (activeEditField === "email") {
         await updateEmail({
@@ -56,14 +56,20 @@ export default function Profile() {
             token:
               localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
-        }).then(() => {
-          refetch();
-          window.location.reload();
+          refetchQueries: [{ query: GET_CURRENT_USER }],
         });
       }
       setActiveEditField("");
+      window.location.reload();
     },
-    [activeEditField, username, userEmail, updateUsername, updateEmail, refetch]
+    [
+      activeEditField,
+      username,
+      userEmail,
+      updateUsername,
+      updateEmail,
+      refetch(),
+    ]
   );
 
   const handleImageUpload = useCallback(
@@ -92,15 +98,29 @@ export default function Profile() {
           id: user.id,
           profilePicture: image,
         },
-      }).then(() => {
-        refetch();
-        window.location.reload();
       });
+      refetch();
+      window.location.reload();
     },
-    [createUpdateProfilePicture, refetch]
+    [createUpdateProfilePicture, refetch()]
   );
 
-  refetch();
+  // rewrite user data in local and sesstion storage
+  useEffect(() => {
+    const currentUser = JSON.parse(
+      localStorage.getItem("currentUser") ||
+        sessionStorage.getItem("currentUser")
+    );
+    if (activeEditField === "username") {
+      currentUser.username = username;
+    } else if (activeEditField === "email") {
+      currentUser.email = userEmail;
+    }
+
+    currentUser.profilePicture = uData?.getCurrentUser?.profilePicture;
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }, [activeEditField, username, userEmail, refetch()]);
 
   return (
     <div className="overflow-hidden bg-white shadow-lg mt-8 w-1/3 float-left sm:rounded-lg">
