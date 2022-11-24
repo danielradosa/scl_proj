@@ -36,6 +36,7 @@ const Signup = () => {
           className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="email"
           placeholder="E-mail"
+          required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />{" "}
@@ -43,6 +44,7 @@ const Signup = () => {
         <input
           className="p-2 rounded-lg text-slate-700 border-2 border-slate-200"
           type="password"
+          required
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -53,6 +55,7 @@ const Signup = () => {
           type="password"
           placeholder="Confirm Password"
           value={passwordC}
+          required
           onChange={(e) => setPasswordC(e.target.value)}
         />{" "}
         <br />
@@ -61,6 +64,7 @@ const Signup = () => {
           type="text"
           placeholder="Handle"
           value={handle}
+          required
           onChange={(e) => setHandle(e.target.value)}
         />{" "}
         <br />
@@ -69,6 +73,7 @@ const Signup = () => {
           type="text"
           placeholder="Username"
           value={username}
+          required
           onChange={(e) => setUsername(e.target.value)}
         />{" "}
         <br />

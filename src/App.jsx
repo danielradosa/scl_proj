@@ -10,7 +10,7 @@ import { LogoutButton } from "./components/logoutButton";
 import Profile from "./pages/Profile";
 import { Navigation } from "./components/navigation";
 import ProfileSettings from "./components/profileSettings";
-
+import { Header } from "./components/header";
 
 function App() {
 
@@ -26,6 +26,10 @@ function App() {
         <Route
           element={
             <>
+              <Header />
+              <br />
+              <br />
+              <br />
               <LogoutButton />
               <Navigation />
               <IsAuthenticated />

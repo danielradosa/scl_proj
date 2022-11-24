@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   UPDATE_USERNAME,
@@ -100,29 +100,14 @@ export default function Profile() {
     [createUpdateProfilePicture, refetch]
   );
 
-  // after user updates their username or email, update the currentUser in localStorage
-  React.useEffect(() => {
-    const currentUser = JSON.parse(
-      localStorage.getItem("currentUser") ||
-        sessionStorage.getItem("currentUser")
-    );
-    if (activeEditField === "username") {
-      currentUser.username = username;
-    } else if (activeEditField === "email") {
-      currentUser.email = userEmail;
-    } else {
-      currentUser.profilePicture = user.profilePicture;
-    }
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
-  }, [activeEditField, username, userEmail]);
+  refetch();
 
   return (
     <div className="overflow-hidden bg-white shadow-lg mt-8 w-1/3 float-left sm:rounded-lg">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           <div className="text-sm mt-2">
-          <form onSubmit={handleImageUpload} className="flex text-center">
+            <form onSubmit={handleImageUpload} className="flex text-center">
               <label htmlFor="image">Upload or change profile picture: </label>
               <input
                 type="file"

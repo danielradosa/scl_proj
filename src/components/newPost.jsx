@@ -93,6 +93,8 @@ export default function NewPost() {
           <textarea
             className="w-full p-4 text-xl border-2 m-4 rounded-lg"
             name="content"
+            required
+            minLength={1}
             rows="5"
             cols="33"
             placeholder="What's happening?"
@@ -100,7 +102,7 @@ export default function NewPost() {
           ></textarea>
         </div>
         <div className="text-sm mt-2">
-          <label htmlFor="image">Upload image: </label>
+          <label htmlFor="image">Upload image (if you want): </label>
           <input type="file" name="image" id="image" accept="image/*" className="rounded-lg bg-white text-slate-400 outline-none" />
         </div>
         <button type="submit" className="text-slate-700 pl-2 pr-2 mt-4 rounded-lg border-2 pt-2 pb-2">Create Post</button>

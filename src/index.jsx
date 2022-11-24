@@ -8,7 +8,6 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import App from "./App";
-import { Header } from "./components/header";
 
 const rootElement = document.getElementById("root");
 const root = createRoot(rootElement);
@@ -39,10 +38,6 @@ const client = new ApolloClient({
 root.render(
   <ApolloProvider client={client}>
     <React.StrictMode>
-      <Header />
-      <br />
-      <br />
-      <br />
       <App />
     </React.StrictMode>
   </ApolloProvider>

@@ -19,11 +19,13 @@ export default function Posts() {
     data: currentUserData,
     loading: userLoading,
     error: userError,
+    refetch: userRefetch
   } = useQuery(GET_CURRENT_USER, { fetchPolicy: "network-only" });
   const {
     data: postsData,
     loading: postsLoading,
     error: postsError,
+    refetch: postsRefetch
   } = useQuery(ALL_POSTS, { fetchPolicy: "network-only" });
 
   // return user & post data
@@ -61,7 +63,7 @@ export default function Posts() {
     if (post.postedBy.handle === currentUser.handle) {
       return (
         <button className="delete" onClick={handleDelete}>
-          X
+          Remove
         </button>
       );
     }
@@ -90,6 +92,9 @@ export default function Posts() {
       );
     }
   };
+
+  userRefetch();
+  postsRefetch();
 
   return (
     <div className="posts mt-0">
