@@ -54,6 +54,8 @@ export const LOGIN_MUTATION = gql`
         email
         profilePicture
         handle
+        artist
+        role
         followers
         following 
         bio {
@@ -147,6 +149,15 @@ export const CREATE_UPDATE_PROFILE_PICTURE = gql`
   }
 `;
 
+export const TOGGLE_ARTIST = gql`
+  mutation toggleArtist($id: ID!) {
+    toggleArtist(id: $id) {
+      id
+      artist
+    }
+  }
+`;
+
 export default {
   DELETE_POST,
   LIKE_POST,
@@ -157,4 +168,5 @@ export default {
   UPDATE_USERNAME,
   UPDATE_EMAIL,
   CREATE_UPDATE_PROFILE_PICTURE,
+  TOGGLE_ARTIST,
 };

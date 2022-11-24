@@ -2,8 +2,8 @@ import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { ReactComponent as Location } from "../components/icons/location.svg";
 import { ReactComponent as Weblink } from "../components/icons/weblink.svg";
-import { GET_USER_POSTS } from "../utils/Queries";
-import { DELETE_POST, LIKE_POST } from "../utils/Mutations";
+import { GET_USER_POSTS, GET_CURRENT_USER } from "../utils/Queries";
+import { DELETE_POST, LIKE_POST, TOGGLE_ARTIST } from "../utils/Mutations";
 import { Spinner } from "../components/Spinner";
 
 export default function Profile() {
@@ -11,14 +11,25 @@ export default function Profile() {
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
+
   const { loading, error, data, refetch } = useQuery(GET_USER_POSTS, {
     variables: { handle: user.handle },
   });
+  const { data: userData, refetch: userDataRefetch } = useQuery(GET_CURRENT_USER);
   const [deletePost] = useMutation(DELETE_POST, {
-    refetchQueries: [{ query: GET_USER_POSTS, variables: { handle: user.handle } }],
+    refetchQueries: [
+      { query: GET_USER_POSTS, variables: { handle: user.handle } },
+    ],
   });
   const [likePost] = useMutation(LIKE_POST, {
-    refetchQueries: [{ query: GET_USER_POSTS, variables: { handle: user.handle } }],
+    refetchQueries: [
+      { query: GET_USER_POSTS, variables: { handle: user.handle } },
+    ],
+  });
+  const [toggleArtist] = useMutation(TOGGLE_ARTIST, {
+    refetchQueries: [
+      { query: GET_CURRENT_USER, variables: { handle: user.handle } },
+    ],
   });
 
   if (loading) return <Spinner />;
@@ -45,7 +56,8 @@ export default function Profile() {
 
   // like the post
   const checkLike = (post) => {
-    const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
 
     const handleLike = () => {
       likePost({ variables: { id: post.id, token } });
@@ -63,6 +75,21 @@ export default function Profile() {
           🖤
         </button>
       );
+    }
+  };
+
+  // handle artist toggle
+  const checkArtist = () => {
+    const handleArtist = () => {
+      toggleArtist({ variables: { id: user.id } }, refetch());
+    };
+
+    if (user.artist === true && userData.getCurrentUser.artist === true) {
+      return (
+        <input type="checkbox" defaultChecked onClick={handleArtist} />
+      );
+    } else {
+      return <input type="checkbox" onClick={handleArtist} />;
     }
   };
 
@@ -97,6 +124,13 @@ export default function Profile() {
 
         <div>
           <p className="text-slate-700 text-xl mt-6 ml-4">{user.bio.body}</p>
+          <div className="toggle ml-4 text-sm mt-2">
+            Want to be discoverable as artist? Flip the switch{" "}
+            <label className="switch ml-1">
+              {checkArtist()}
+              <span className="slider round"></span>
+            </label>
+          </div>
         </div>
 
         <div className="flex">
@@ -123,16 +157,16 @@ export default function Profile() {
                 key={post.id}
               >
                 <div>
-                <img
-                  className="rounded-lg left-0 ml-0"
-                  src={
-                    post.postedBy.profilePicture ||
-                    "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-                  }
-                  width="40px"
-                  alt={post.postedBy.username}
-                />
-              </div>
+                  <img
+                    className="rounded-lg left-0 ml-0"
+                    src={
+                      post.postedBy.profilePicture ||
+                      "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+                    }
+                    width="40px"
+                    alt={post.postedBy.username}
+                  />
+                </div>
                 <div className="mt-4">
                   {checkUser(post)}
                   <span className="text-slate-400">
