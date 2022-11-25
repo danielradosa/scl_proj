@@ -25,8 +25,8 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const ALL_POSTS = gql`
-  {
-    getAllPosts {
+  query getAllPosts($limit: Int, $offset: Int) {
+    getAllPosts(limit: $limit, offset: $offset) {
       id
       title
       content
