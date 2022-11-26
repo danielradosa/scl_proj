@@ -1,16 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { ReactComponent as Location } from "../components/icons/location.svg";
 import { ReactComponent as Weblink } from "../components/icons/weblink.svg";
 import { GET_USER_POSTS, GET_CURRENT_USER } from "../utils/Queries";
 import { DELETE_POST, LIKE_POST, TOGGLE_ARTIST } from "../utils/Mutations";
 import { Spinner } from "../components/Spinner";
+import { useParams } from "react-router-dom";
 
 export default function Profile() {
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
+  const { userHandle } = useParams();
+
+
+  useEffect(() => {
+    console.log(userHandle)
+  }, []);
 
   const { loading, error, data, refetch } = useQuery(GET_USER_POSTS, {
     variables: { handle: user.handle },
@@ -111,20 +118,20 @@ export default function Profile() {
           </div>
           <div className="float-right flex">
             <h3 className="text-black text-md flex mr-4">
-              <Location /> {user.bio.location}
+              <Location />{/*  {user.bio.location} */}
             </h3>
             <h3 className="text-black text-md flex">
               <Weblink />
-              <a href={user.bio.website} target={"_blank"}>
+              {/*               <a href={user.bio.website} target={"_blank"}>
                 {user.bio.website.slice(8)}
-              </a>
+              </a> */}
             </h3>
           </div>
         </div>
 
         <div>
-          <p className="text-slate-700 text-xl mt-6 ml-4">{user.bio.body}</p>
-          <div className="toggle ml-4 text-sm mt-2">
+          {/*           <p className="text-slate-700 text-xl mt-6 ml-4">{user.bio.body}</p>
+ */}          <div className="toggle ml-4 text-sm mt-2">
             Want to be discoverable as artist? Flip the switch{" "}
             <label className="switch ml-1">
               {checkArtist()}

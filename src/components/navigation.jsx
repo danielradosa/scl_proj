@@ -32,7 +32,7 @@ const Navigation = () => {
           <Feed className="ico" />
           News feed
         </Link>
-        <Link to="/profile" className="text-lg text-slate-700 links ml-0 mt-2">
+        <Link to={`/profile/${userHandle}`} className="text-lg text-slate-700 links ml-0 mt-2">
           <Profile className="ico" />
           My Profile
         </Link>
