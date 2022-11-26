@@ -19,14 +19,19 @@ export default function Posts() {
     data: currentUserData,
     loading: userLoading,
     error: userError,
-    refetch: userRefetch
+    refetch: userRefetch,
   } = useQuery(GET_CURRENT_USER, { fetchPolicy: "network-only" });
+  // posts query with limit offset and refetch
   const {
     data: postsData,
     loading: postsLoading,
     error: postsError,
-    refetch: postsRefetch
-  } = useQuery(ALL_POSTS, { fetchPolicy: "network-only" });
+    refetch: postsRefetch,
+    fetchMore,
+  } = useQuery(ALL_POSTS, {
+    fetchPolicy: "network-only",
+    variables: { limit: 5 },
+  });
 
   // return user & post data
   useEffect(() => {
@@ -93,6 +98,22 @@ export default function Posts() {
     }
   };
 
+  // load more older posts
+  window.onscroll = () => {
+    if (
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight
+    ) {
+      fetchMore({
+        variables: {
+          offset: posts.length,
+        },
+      }).then((res) => {
+        setPosts([...posts, ...res.data.getAllPosts]);
+      });
+    }
+  };
+
   userRefetch();
   postsRefetch();
 
@@ -101,46 +122,46 @@ export default function Posts() {
       <NewPost />
 
       <div className="mt-2">
-        {posts
-          .slice(0)
-          .reverse()
-          .map((post) => (
-            <div className="bg-white p-6 rounded-lg shadow-lg mt-8 mb-4" key={post.id}>
-              <div>
-                <img
-                  className="rounded-lg left-0 ml-0"
-                  src={
-                    post.postedBy.profilePicture ||
-                    "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
-                  }
-                  width="40px"
-                  alt={post.postedBy.username}
-                />
-              </div>
-              <div className="mt-4">
-                {checkUser(post)}
-                <span className="text-slate-400">
-                  {post.postedBy.username} |{" "}
-                  <span className="handlena">{post.postedBy.handle}</span>
-                  &nbsp;*{" "}
-                  <span className="date">
-                    {new Date(post.createdAt).toLocaleString("fr-FR")}
-                  </span>
+        {posts.map((post) => (
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg mt-8 mb-4"
+            key={post.id}
+          >
+            <div>
+              <img
+                className="rounded-lg left-0 ml-0"
+                src={
+                  post.postedBy.profilePicture ||
+                  "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"
+                }
+                width="40px"
+                alt={post.postedBy.username}
+              />
+            </div>
+            <div className="mt-4">
+              {checkUser(post)}
+              <span className="text-slate-400">
+                {post.postedBy.username} |{" "}
+                <span className="handlena">{post.postedBy.handle}</span>
+                &nbsp;*{" "}
+                <span className="date">
+                  {new Date(post.createdAt).toLocaleString("fr-FR")}
                 </span>
-                <h4 className="mt-2 font-bold text-xl">{post.title}</h4>
-                <p className="text-slate-700 pb-4">{post.content}</p>
-                <img
-                  src={post.postImage}
-                  className="rounded-lg"
-                  alt={post.title ? "" : null}
-                />
-                <br />
-                <div className="text-slate-500">
-                  {post.likedBy.length} {checkLike(post)}
-                </div>
+              </span>
+              <h4 className="mt-2 font-bold text-xl">{post.title}</h4>
+              <p className="text-slate-700 pb-4">{post.content}</p>
+              <img
+                src={post.postImage}
+                className="rounded-lg"
+                alt={post.title ? "" : null}
+              />
+              <br />
+              <div className="text-slate-500">
+                {post.likedBy.length} {checkLike(post)}
               </div>
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );
