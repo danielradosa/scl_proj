@@ -1,53 +1,53 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { ReactComponent as Location } from "../components/icons/location.svg";
 import { ReactComponent as Weblink } from "../components/icons/weblink.svg";
-import { GET_USER_POSTS, GET_CURRENT_USER } from "../utils/Queries";
+import { ALL_USERS, GET_USER_POSTS, GET_CURRENT_USER } from "../utils/Queries";
 import { DELETE_POST, LIKE_POST, TOGGLE_ARTIST } from "../utils/Mutations";
 import { Spinner } from "../components/Spinner";
 import { useParams } from "react-router-dom";
 
 export default function Profile() {
-  const user = JSON.parse(
+  const currentUser = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
   const { userHandle } = useParams();
+  const userHandleToQuery = userHandle != null ? userHandle : currentUser.handle;
 
-
-  useEffect(() => {
-    console.log(userHandle)
-  }, []);
-
+  // TODO: get user by handle would work better here
+  const allUsers = useQuery(ALL_USERS);
+  const userData = !allUsers.loading && !allUsers.error ? allUsers.data.getAllUsers.find(e => e.handle === userHandleToQuery) : undefined;
   const { loading, error, data, refetch } = useQuery(GET_USER_POSTS, {
-    variables: { handle: user.handle },
+    variables: { handle: userData?.handle },
+    skip: userData == null,
   });
-  const { data: userData, refetch: userDataRefetch } = useQuery(GET_CURRENT_USER);
+
   const [deletePost] = useMutation(DELETE_POST, {
     refetchQueries: [
-      { query: GET_USER_POSTS, variables: { handle: user.handle } },
+      { query: GET_USER_POSTS, variables: { handle: userData?.handle } },
     ],
   });
   const [likePost] = useMutation(LIKE_POST, {
     refetchQueries: [
-      { query: GET_USER_POSTS, variables: { handle: user.handle } },
+      { query: GET_USER_POSTS, variables: { handle: userData?.handle } },
     ],
   });
   const [toggleArtist] = useMutation(TOGGLE_ARTIST, {
     refetchQueries: [
-      { query: GET_CURRENT_USER, variables: { handle: user.handle } },
+      { query: GET_CURRENT_USER, variables: { handle: userData?.handle } },
     ],
   });
 
-  if (loading) return <Spinner />;
-  if (error) return <p>Error :(</p>;
+  if (allUsers.loading || loading) return <Spinner />;
+  if (error) return <p>Error : {error}</p>;
 
   const posts = data.getAllPostsByUser;
-  refetch();
+  // refetch();
 
   // if current user matches post user, show delete button
   const checkUser = (post) => {
-    if (post.postedBy.handle === user.handle) {
+    if (post.postedBy.handle === currentUser.handle) {
       return (
         <button
           className="delete"
@@ -70,7 +70,7 @@ export default function Profile() {
       likePost({ variables: { id: post.id, token } });
     };
 
-    if (post.likedBy.find((user) => user.handle === user.handle)) {
+    if (post.likedBy.find((user) => user.handle === userData?.handle)) {
       return (
         <button className="like" onClick={handleLike}>
           🧡
@@ -87,11 +87,14 @@ export default function Profile() {
 
   // handle artist toggle
   const checkArtist = () => {
+    // Toggle should only work if the user is the current user
+    if (userData?.handle !== currentUser.handle) return null;
+
     const handleArtist = () => {
-      toggleArtist({ variables: { id: user.id } }, refetch());
+      toggleArtist({ variables: { id: currentUser.id } }, refetch());
     };
 
-    if (user.artist === true && userData.getCurrentUser.artist === true) {
+    if (currentUser.artist === true && userData.getCurrentUser.artist === true) {
       return (
         <input type="checkbox" defaultChecked onClick={handleArtist} />
       );
@@ -106,14 +109,14 @@ export default function Profile() {
         <div className="flex">
           <div className="float-left flex">
             <img
-              src={user.profilePicture}
+              src={userData.profilePicture}
               alt="profile"
               width={96}
               className="rounded-lg"
             />
             <h2 className="text-slate-700 text-xl ml-4">
-              {user.username} <br />
-              <span className="text-slate-500 text-lg">{user.handle}</span>
+              {userData.username} <br />
+              <span className="text-slate-500 text-lg">{userData.handle}</span>
             </h2>
           </div>
           <div className="float-right flex">
@@ -131,24 +134,26 @@ export default function Profile() {
 
         <div>
           {/*           <p className="text-slate-700 text-xl mt-6 ml-4">{user.bio.body}</p>
- */}          <div className="toggle ml-4 text-sm mt-2">
-            Want to be discoverable as artist? Flip the switch{" "}
-            <label className="switch ml-1">
-              {checkArtist()}
-              <span className="slider round"></span>
-            </label>
-          </div>
+ */}          {userData?.handle === currentUser.handle ? (
+            <div className="toggle ml-4 text-sm mt-2">
+              Want to be discoverable as artist? Flip the switch{" "}
+              <label className="switch ml-1">
+                {checkArtist()}
+                <span className="slider round"></span>
+              </label>
+            </div>
+          ) : null}
         </div>
 
         <div className="flex">
           <h3 className="text-slate-700 text-md mt-6 ml-4">
             Followers
-            <div className="flex font-bold">{user.followers.length}</div>
+            <div className="flex font-bold">{userData.followers.length}</div>
           </h3>
 
           <h3 className="text-slate-700 text-md mt-6 ml-4">
             Following
-            <div className="flex font-bold">{user.following.length}</div>
+            <div className="flex font-bold">{userData.following.length}</div>
           </h3>
         </div>
       </div>
@@ -177,8 +182,8 @@ export default function Profile() {
                 <div className="mt-4">
                   {checkUser(post)}
                   <span className="text-slate-400">
-                    {user.username} |{" "}
-                    <span className="handlena">{user.handle}</span>
+                    {userData.username} |{" "}
+                    <span className="handlena">{userData.handle}</span>
                     &nbsp;*{" "}
                     <span className="date">
                       {new Date(post.createdAt).toLocaleString("fr-FR")}

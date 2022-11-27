@@ -11,6 +11,8 @@ import Profile from "./pages/Profile";
 import { Navigation } from "./components/navigation";
 import ProfileSettings from "./components/profileSettings";
 import { Header } from "./components/header";
+import Discover from "./pages/Discover";
+
 
 function App() {
 
@@ -21,7 +23,6 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/profile/:userHandle" element={<Profile />} />
 
         {/* Protected routes */}
         <Route
@@ -40,6 +41,9 @@ function App() {
           <Route element={<Posts />} path="/dashboard" exact />
           <Route path="/settings" element={<ProfileSettings />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userHandle" element={<Profile />} />
+          <Route path="/discover" element={<Discover />} />
+
         </Route>
       </Routes>
     </Router>
