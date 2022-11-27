@@ -23,7 +23,6 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/profile/:userHandle" element={<Profile />} />
 
-
         {/* Protected routes */}
         <Route
           element={
