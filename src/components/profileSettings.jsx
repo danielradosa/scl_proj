@@ -9,7 +9,7 @@ import { GET_CURRENT_USER } from "../utils/Queries";
 
 export default function Profile() {
   const { refetch, data: uData } = useQuery(GET_CURRENT_USER, {
-    refetchQueries: [{ query: GET_CURRENT_USER }],
+    refetchQueries: [GET_CURRENT_USER],
   });
 
   const user = JSON.parse(
@@ -22,16 +22,16 @@ export default function Profile() {
   const [userEmail, setUserEmail] = React.useState(user.email || "");
 
   const [updateUsername] = useMutation(UPDATE_USERNAME, {
-    refetchQueries: [{ query: GET_CURRENT_USER }],
+    refetchQueries: [GET_CURRENT_USER],
   });
   const [updateEmail] = useMutation(UPDATE_EMAIL, {
-    refetchQueries: [{ query: GET_CURRENT_USER }],
+    refetchQueries: [GET_CURRENT_USER],
   });
 
   const [createUpdateProfilePicture] = useMutation(
     CREATE_UPDATE_PROFILE_PICTURE,
     {
-      refetchQueries: [{ query: GET_CURRENT_USER }],
+      refetchQueries: [GET_CURRENT_USER],
     }
   );
 
@@ -46,7 +46,7 @@ export default function Profile() {
             token:
               localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
-          refetchQueries: [{ query: GET_CURRENT_USER }],
+          refetchQueries: [GET_CURRENT_USER],
         });
       } else if (activeEditField === "email") {
         await updateEmail({
@@ -56,7 +56,7 @@ export default function Profile() {
             token:
               localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
-          refetchQueries: [{ query: GET_CURRENT_USER }],
+          refetchQueries: [GET_CURRENT_USER],
         });
       }
       setActiveEditField("");

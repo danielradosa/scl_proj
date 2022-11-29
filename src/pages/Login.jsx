@@ -13,7 +13,7 @@ export default function Login() {
   const [loggedInState, setLoggedInState] = useState(false);
 
   const [loginMutation] = useMutation(LOGIN_MUTATION, {
-    refetchQueries: [{ query: GET_CURRENT_USER }],
+    refetchQueries: [GET_CURRENT_USER],
   });
 
   // set current user to local and session storage
@@ -31,8 +31,8 @@ export default function Login() {
         const storage = remember ? localStorage : sessionStorage;
         storage.setItem("token", data.login.token);
         storage.setItem("currentUser", JSON.stringify(data.login.allUserInfo));
-
         navigate("/dashboard", { replace: true });
+        window.location.reload();
       }
     },
     [email, password, remember, loginMutation, navigate]

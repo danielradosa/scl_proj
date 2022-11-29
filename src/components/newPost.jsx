@@ -7,14 +7,16 @@ import { ALL_POSTS } from "../utils/Queries";
 
 export default function NewPost() {
   const [addPost] = useMutation(ADD_POST, {
-    refetchQueries: [{ query: ALL_POSTS }],
+    refetchQueries: [ALL_POSTS],
   });
 
   const user = JSON.parse(
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
-  const profilePicture = user.profilePicture || "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
+  const profilePicture =
+    user.profilePicture ||
+    "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y";
   const userHandle = user.handle;
 
   const createPost = useCallback(
@@ -89,7 +91,11 @@ export default function NewPost() {
         />{" "}
         <span className="font-thin"> * not required</span> <br />
         <div className="flex ml-2 ">
-          <img src={profilePicture} alt="prof_pic" className="rounded-lg mt-4 ml-0 prof" />
+          <img
+            src={profilePicture}
+            alt="prof_pic"
+            className="rounded-lg mt-4 ml-0 prof"
+          />
           <textarea
             className="w-full p-4 text-xl border-2 m-4 rounded-lg"
             name="content"
@@ -103,9 +109,20 @@ export default function NewPost() {
         </div>
         <div className="text-sm mt-2">
           <label htmlFor="image">Upload image (if you want): </label>
-          <input type="file" name="image" id="image" accept="image/*" className="rounded-lg bg-white text-slate-400 outline-none" />
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept="image/*"
+            className="rounded-lg bg-white text-slate-400 outline-none"
+          />
         </div>
-        <button type="submit" className="text-slate-700 pl-2 pr-2 mt-4 rounded-lg border-2 pt-2 pb-2">Create Post</button>
+        <button
+          type="submit"
+          className="text-slate-700 pl-2 pr-2 mt-4 rounded-lg border-2 pt-2 pb-2"
+        >
+          Create Post
+        </button>
       </form>
     </div>
   );

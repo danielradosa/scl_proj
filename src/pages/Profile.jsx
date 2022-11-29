@@ -49,6 +49,7 @@ export default function Profile() {
   const [followUnfollowUser] = useMutation(FOLLOW_UNFOLOW_USER, {
     refetchQueries: [
       { query: GET_CURRENT_USER, variables: { handle: userData?.handle } },
+      { query: ALL_USERS },
     ],
   });
 
@@ -70,33 +71,6 @@ export default function Profile() {
           Remove
         </button>
       );
-    }
-  };
-
-  // show follow button if not current user and not already following
-  const checkFollow = () => {
-    const handleFollow = () => {
-      followUnfollowUser({
-        variables: { id: currentUser.id, handle: userData?.handle },
-      });
-    };
-
-    // if current user is not the user being viewed
-    if (currentUser.handle !== userData?.handle) {
-      // if current user is not following user being viewed
-      if (!currentUser.following.includes(userData?.handle)) {
-        return (
-          <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-white bg-black h-8 ml-12" onClick={handleFollow}>
-            Follow
-          </button>
-        );
-      } else {
-        return (
-          <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-black border-black h-8 ml-12" onClick={handleFollow}>
-            Unfollow
-          </button>
-        );
-      }
     }
   };
 
@@ -140,8 +114,41 @@ export default function Profile() {
     }
   };
 
+  // show follow button if not current user and not already following
+  const checkFollow = () => {
+    const handleFollow = () => {
+      followUnfollowUser({
+        variables: { id: currentUser.id, handle: userData?.handle },
+      });
+    };
+
+    // if current user is not the user being viewed
+    if (currentUser.handle !== userData?.handle) {
+      // if current user is not following user being viewed
+      if (!currentUser.following.includes(userData?.handle)) {
+        return (
+          <button
+            className="mt-8 rounded-lg border-2 pr-4 pl-4 text-white bg-black h-8 ml-12"
+            onClick={handleFollow}
+          >
+            Follow
+          </button>
+        );
+      } else {
+        return (
+          <button
+            className="mt-8 rounded-lg border-2 pr-4 pl-4 text-black border-black h-8 ml-12"
+            onClick={handleFollow}
+          >
+            Unfollow
+          </button>
+        );
+      }
+    }
+  };
+
   return (
-    <div className="mt-8 float-left">
+    <div className="mt-8 float-left posts">
       <div className=" bg-white profile rounded-lg shadow-lg p-6">
         <div className="flex">
           <div className="float-left flex">

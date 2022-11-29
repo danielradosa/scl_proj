@@ -1,18 +1,20 @@
-import "./styles.css";
-import NewPost from "./components/newPost";
+import "../styles.css";
+import NewPost from "../components/newPost";
 import { useQuery, useMutation } from "@apollo/client";
 import React, { useState, useEffect } from "react";
-import { GET_CURRENT_USER, ALL_POSTS } from "./utils/Queries";
-import { DELETE_POST, LIKE_POST } from "./utils/Mutations";
+import { GET_CURRENT_USER, ALL_POSTS } from "../utils/Queries";
+import { DELETE_POST, LIKE_POST } from "../utils/Mutations";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [deletePost] = useMutation(DELETE_POST, {
-    refetchQueries: [{ query: ALL_POSTS }],
+    refetchQueries: [ALL_POSTS],
+    fetchPolicy: "network-only",
   });
   const [likePost] = useMutation(LIKE_POST, {
-    refetchQueries: [{ query: ALL_POSTS }],
+    refetchQueries: [ALL_POSTS],
+    fetchPolicy: "network-only",
   });
 
   const {
@@ -20,8 +22,7 @@ export default function Posts() {
     loading: userLoading,
     error: userError,
     refetch: userRefetch,
-  } = useQuery(GET_CURRENT_USER, { fetchPolicy: "network-only" });
-  // posts query with limit offset and refetch
+  } = useQuery(GET_CURRENT_USER);
   const {
     data: postsData,
     loading: postsLoading,
@@ -29,21 +30,10 @@ export default function Posts() {
     refetch: postsRefetch,
     fetchMore,
   } = useQuery(ALL_POSTS, {
-    fetchPolicy: "network-only",
     variables: { limit: 5 },
   });
 
-  
-  // refetch user and posts every second
-  useEffect(() => {
-    const interval = setInterval(() => {
-      userRefetch();
-      postsRefetch();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [userRefetch, postsRefetch]);
-
-  // return user & post data
+  // return user & post data and refetch functions to parent component
   useEffect(() => {
     if (currentUserData) {
       setCurrentUser(currentUserData.getCurrentUser);
@@ -53,7 +43,7 @@ export default function Posts() {
     }
   }, [currentUserData, postsData]);
 
-  if (postsLoading && userLoading)
+  if (postsLoading || userLoading)
     return (
       <img
         src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
@@ -62,7 +52,7 @@ export default function Posts() {
         width={100}
       />
     );
-  if (postsError && userError)
+  if (postsError || userError)
     return (
       <h4>
         {postsError.message} | {userError.message}
@@ -150,7 +140,12 @@ export default function Posts() {
               <span className="text-slate-400">
                 {post.postedBy.username} |{" "}
                 <span className="handlena">
-                  <a href={`/profile/${post.postedBy.handle}`} className="text-gray-800">{post.postedBy.handle}</a>
+                  <a
+                    href={`/profile/${post.postedBy.handle}`}
+                    className="text-gray-800"
+                  >
+                    {post.postedBy.handle}
+                  </a>
                 </span>
                 &nbsp;*{" "}
                 <span className="date">

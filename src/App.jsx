@@ -1,7 +1,7 @@
 import "./styles.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Posts from "./Posts";
+import Posts from "./pages/Posts";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import IsAuthenticated from "./components/IsAuthenticated";
@@ -38,7 +38,7 @@ function App() {
             </>
           }
         >
-          <Route element={<Posts />} path="/dashboard" exact />
+          <Route path="/dashboard" element={<Posts />} />
           <Route path="/settings" element={<ProfileSettings />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:userHandle" element={<Profile />} />
