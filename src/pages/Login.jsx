@@ -33,7 +33,6 @@ export default function Login() {
         storage.setItem("currentUser", JSON.stringify(data.login.allUserInfo));
 
         navigate("/dashboard", { replace: true });
-        window.location.reload();
       }
     },
     [email, password, remember, loginMutation, navigate]

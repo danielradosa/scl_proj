@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { ReactComponent as Location } from "../components/icons/location.svg";
 import { ReactComponent as Weblink } from "../components/icons/weblink.svg";
 import { ALL_USERS, GET_USER_POSTS, GET_CURRENT_USER } from "../utils/Queries";
-import { DELETE_POST, LIKE_POST, TOGGLE_ARTIST } from "../utils/Mutations";
+import {
+  DELETE_POST,
+  LIKE_POST,
+  TOGGLE_ARTIST,
+  FOLLOW_UNFOLOW_USER,
+} from "../utils/Mutations";
 import { Spinner } from "../components/Spinner";
 import { useParams } from "react-router-dom";
 
@@ -13,11 +18,14 @@ export default function Profile() {
   );
 
   const { userHandle } = useParams();
-  const userHandleToQuery = userHandle != null ? userHandle : currentUser.handle;
+  const userHandleToQuery =
+    userHandle != null ? userHandle : currentUser.handle;
 
-  // TODO: get user by handle would work better here
   const allUsers = useQuery(ALL_USERS);
-  const userData = !allUsers.loading && !allUsers.error ? allUsers.data.getAllUsers.find(e => e.handle === userHandleToQuery) : undefined;
+  const userData =
+    !allUsers.loading && !allUsers.error
+      ? allUsers.data.getAllUsers.find((e) => e.handle === userHandleToQuery)
+      : undefined;
   const { loading, error, data, refetch } = useQuery(GET_USER_POSTS, {
     variables: { handle: userData?.handle },
     skip: userData == null,
@@ -38,12 +46,16 @@ export default function Profile() {
       { query: GET_CURRENT_USER, variables: { handle: userData?.handle } },
     ],
   });
+  const [followUnfollowUser] = useMutation(FOLLOW_UNFOLOW_USER, {
+    refetchQueries: [
+      { query: GET_CURRENT_USER, variables: { handle: userData?.handle } },
+    ],
+  });
 
   if (allUsers.loading || loading) return <Spinner />;
   if (error) return <p>Error : {error}</p>;
 
   const posts = data.getAllPostsByUser;
-  // refetch();
 
   // if current user matches post user, show delete button
   const checkUser = (post) => {
@@ -61,6 +73,33 @@ export default function Profile() {
     }
   };
 
+  // show follow button if not current user and not already following
+  const checkFollow = () => {
+    const handleFollow = () => {
+      followUnfollowUser({
+        variables: { id: currentUser.id, handle: userData?.handle },
+      });
+    };
+
+    // if current user is not the user being viewed
+    if (currentUser.handle !== userData?.handle) {
+      // if current user is not following user being viewed
+      if (!currentUser.following.includes(userData?.handle)) {
+        return (
+          <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-white bg-black h-8 ml-12" onClick={handleFollow}>
+            Follow
+          </button>
+        );
+      } else {
+        return (
+          <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-black border-black h-8 ml-12" onClick={handleFollow}>
+            Unfollow
+          </button>
+        );
+      }
+    }
+  };
+
   // like the post
   const checkLike = (post) => {
     const token =
@@ -70,7 +109,7 @@ export default function Profile() {
       likePost({ variables: { id: post.id, token } });
     };
 
-    if (post.likedBy.find((user) => user.handle === userData?.handle)) {
+    if (post.likedBy.find((like) => like.handle === currentUser.handle)) {
       return (
         <button className="like" onClick={handleLike}>
           🧡
@@ -94,10 +133,8 @@ export default function Profile() {
       toggleArtist({ variables: { id: currentUser.id } }, refetch());
     };
 
-    if (currentUser.artist === true && userData.getCurrentUser.artist === true) {
-      return (
-        <input type="checkbox" defaultChecked onClick={handleArtist} />
-      );
+    if (currentUser.artist === true) {
+      return <input type="checkbox" defaultChecked onClick={handleArtist} />;
     } else {
       return <input type="checkbox" onClick={handleArtist} />;
     }
@@ -121,20 +158,21 @@ export default function Profile() {
           </div>
           <div className="float-right flex">
             <h3 className="text-black text-md flex mr-4">
-              <Location />{/*  {user.bio.location} */}
+              <Location />
+              {"Location"}
             </h3>
             <h3 className="text-black text-md flex">
               <Weblink />
-              {/*               <a href={user.bio.website} target={"_blank"}>
-                {user.bio.website.slice(8)}
-              </a> */}
+              <a href={"No link"} target={"_blank"}>
+                {"Weblink"}
+              </a>
             </h3>
           </div>
         </div>
 
         <div>
-          {/*           <p className="text-slate-700 text-xl mt-6 ml-4">{user.bio.body}</p>
- */}          {userData?.handle === currentUser.handle ? (
+          <p className="text-slate-700 text-xl mt-6 ml-4">{"Bio body"}</p>{" "}
+          {userData?.handle === currentUser.handle ? (
             <div className="toggle ml-4 text-sm mt-2">
               Want to be discoverable as artist? Flip the switch{" "}
               <label className="switch ml-1">
@@ -155,6 +193,8 @@ export default function Profile() {
             Following
             <div className="flex font-bold">{userData.following.length}</div>
           </h3>
+
+          {checkFollow()}
         </div>
       </div>
 

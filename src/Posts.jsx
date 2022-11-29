@@ -33,6 +33,16 @@ export default function Posts() {
     variables: { limit: 5 },
   });
 
+  
+  // refetch user and posts every second
+  useEffect(() => {
+    const interval = setInterval(() => {
+      userRefetch();
+      postsRefetch();
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [userRefetch, postsRefetch]);
+
   // return user & post data
   useEffect(() => {
     if (currentUserData) {
@@ -114,9 +124,6 @@ export default function Posts() {
     }
   };
 
-  userRefetch();
-  postsRefetch();
-
   return (
     <div className="posts mt-0">
       <NewPost />
@@ -142,7 +149,9 @@ export default function Posts() {
               {checkUser(post)}
               <span className="text-slate-400">
                 {post.postedBy.username} |{" "}
-                <span className="handlena">{post.postedBy.handle}</span>
+                <span className="handlena">
+                  <a href={`/profile/${post.postedBy.handle}`} className="text-gray-800">{post.postedBy.handle}</a>
+                </span>
                 &nbsp;*{" "}
                 <span className="date">
                   {new Date(post.createdAt).toLocaleString("fr-FR")}

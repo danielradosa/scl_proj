@@ -16,6 +16,14 @@ export const LIKE_POST = gql`
   }
 `;
 
+export const FOLLOW_UNFOLOW_USER = gql`
+  mutation followOrUnfollowUser($id: ID!, $handle: String!) {
+    followOrUnfollowUser(id: $id, handle: $handle) {
+      id
+    }
+  }
+`;
+
 export const ADD_POST = gql`
   mutation createPost(
     $title: String!
@@ -169,4 +177,5 @@ export default {
   UPDATE_EMAIL,
   CREATE_UPDATE_PROFILE_PICTURE,
   TOGGLE_ARTIST,
+  FOLLOW_UNFOLOW_USER,
 };
