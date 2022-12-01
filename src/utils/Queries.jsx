@@ -170,7 +170,6 @@ query getMostLikedPosts($limit: Int, $offset: Int) {
 }
 `;
 
-
 export default {
   ALL_USERS,
   GET_CURRENT_USER,

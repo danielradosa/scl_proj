@@ -4,6 +4,7 @@ import {
   UPDATE_USERNAME,
   UPDATE_EMAIL,
   CREATE_UPDATE_PROFILE_PICTURE,
+  CREATE_UPDATE_BIO
 } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
 
@@ -16,23 +17,21 @@ export default function Profile() {
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
+  const userBio = uData?.getCurrentUser?.bio;
+
   const [activeEditField, setActiveEditField] = React.useState("");
+
   const [username, setUsername] = React.useState(user.username || "");
   const [userEmail, setUserEmail] = React.useState(user.email || "");
+  const [userWebsite, setUserWebsite] = React.useState(userBio?.website || "");
+  const [userLocation, setUserLocation] = React.useState(userBio?.location || "");
+  const [userBioBody, setUserBioBody] = React.useState(userBio?.body || "");
 
-  const [updateUsername] = useMutation(UPDATE_USERNAME, {
-    refetchQueries: [GET_CURRENT_USER],
-  });
-  const [updateEmail] = useMutation(UPDATE_EMAIL, {
-    refetchQueries: [GET_CURRENT_USER],
-  });
+  const [updateBio] = useMutation(CREATE_UPDATE_BIO, { refetchQueries: [GET_CURRENT_USER]});
+  const [updateUsername] = useMutation(UPDATE_USERNAME, { refetchQueries: [GET_CURRENT_USER]});
+  const [updateEmail] = useMutation(UPDATE_EMAIL, { refetchQueries: [GET_CURRENT_USER]});
 
-  const [createUpdateProfilePicture] = useMutation(
-    CREATE_UPDATE_PROFILE_PICTURE,
-    {
-      refetchQueries: [GET_CURRENT_USER],
-    }
-  );
+  const [createUpdateProfilePicture] = useMutation(CREATE_UPDATE_PROFILE_PICTURE, { refetchQueries: [GET_CURRENT_USER]});
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -57,16 +56,12 @@ export default function Profile() {
           },
           refetchQueries: [GET_CURRENT_USER],
         });
-      }
+      } 
       setActiveEditField("");
       window.location.reload();
     },
-    [
-      activeEditField,
-      username,
-      userEmail,
-      updateUsername,
-      updateEmail,
+    [ activeEditField, username, userEmail,
+      updateUsername, updateEmail,
       refetch(),
     ]
   );
@@ -104,16 +99,34 @@ export default function Profile() {
     [createUpdateProfilePicture, refetch()]
   );
 
+  const handleBioSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    if (activeEditField === "userWebsite") {
+      await updateBio({ variables: { bioBy: user.id, website: userWebsite } });
+    } else if (activeEditField === "userLocation") {
+      await updateBio({ variables: { bioBy: user.id, location: userLocation } });
+    } else if (activeEditField === "userBioBody") {
+      await updateBio({ variables: { bioBy: user.id, body: userBioBody } });
+    }
+    setActiveEditField("");
+    refetch();
+  }, 
+  [activeEditField, userWebsite, userLocation, userBioBody, updateBio]);
+
   // rewrite user data in local and sesstion storage
   useEffect(() => {
-    const currentUser = JSON.parse(
-      localStorage.getItem("currentUser") ||
-        sessionStorage.getItem("currentUser")
-    );
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser"));
+
     if (activeEditField === "username") {
       currentUser.username = username;
     } else if (activeEditField === "email") {
       currentUser.email = userEmail;
+    } else if (activeEditField === "website") {
+      currentUser.bio.website = userWebsite;
+    } else if (activeEditField === "location") {
+      currentUser.bio.location = userLocation;
+    } else if (activeEditField === "body") {
+      currentUser.bio.body = userBioBody;
     }
 
     currentUser.profilePicture = uData?.getCurrentUser?.profilePicture;
@@ -235,75 +248,148 @@ export default function Profile() {
         </dl>
       </div>
 
+      {/* THE BIO PART *********************************************************************************************/}
+
+      <div className="px-4 py-5 sm:px-6">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">
+          <div className="text-sm mt-2">
+            <h3 className="font-bold ml-32">Edit your bio information</h3>
+          </div>
+        </h3>
+      </div>
       <div className="border-t border-gray-200">
-        <dl className="overflow-hidden bg-white mt-8  float-left sm:rounded-lg">
-          <h3 className="text-sm leading-6 text-gray-900 pb-6 ml-[10.85em] font-bold">
-            Edit bio
-          </h3>
-
-          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
-            <dt className="text-sm font-medium text-gray-500">Bio body</dt>
-            <form action="" className="flex">
-              <textarea
-                type="text"
-                rows={3}
-                cols={32}
-                className="border border-gray-300 rounded-lg px-2 py-1"
-                maxLength={222}
-              />
+        <dl>
+          {activeEditField == "website" ? (
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Website</dt>
+              <form action="" className="flex">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-center"
+                  value={userWebsite}
+                  onChange={(e) => setUserWebsite(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  onClick={handleBioSubmit}
+                  className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setActiveEditField("")}
+                  className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div
+              className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+              onClick={() => setActiveEditField("website")}
+            >
+              <dt className="text-sm font-medium text-gray-500">Website</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">
+                {userWebsite}
+              </dd>
               <button
-                type="submit"
-                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                className="sm:col-span-1 text-right"
+                onClick={() => setActiveEditField("website")}
               >
-                Save
+                Edit
               </button>
-              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
-                Cancel
-              </button>
-            </form>
-          </div>
+            </div>
+          )}
 
-          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
-            <dt className="text-sm font-medium text-gray-500">Web link</dt>
-            <form action="" className="flex">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-lg px-2 py-1 w-64"
-                maxLength={255}
-              />
+          {activeEditField == "location" ? (
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Location</dt>
+              <form action="" className="flex">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-center"
+                  value={userLocation}
+                  onChange={(e) => setUserLocation(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  onClick={handleBioSubmit}
+                  className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setActiveEditField("")}
+                  className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div
+              className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+              onClick={() => setActiveEditField("location")}
+            >
+              <dt className="text-sm font-medium text-gray-500">Location</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">
+                {userLocation}
+              </dd>
               <button
-                type="submit"
-                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                className="sm:col-span-1 text-right"
+                onClick={() => setActiveEditField("location")}
               >
-                Save
+                Edit
               </button>
-              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
-                Cancel
-              </button>
-            </form>
-          </div>
+            </div>
+          )}
 
-          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
-            <dt className="text-sm font-medium text-gray-500">Location</dt>
-            <form action="" className="flex">
-              <input
-                type="text"
-                className="border border-gray-300 rounded-lg px-2 py-1 w-64"
-                maxLength={255}
-              />
+          {activeEditField == "bio" ? (
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Bio</dt>
+              <form action="" className="flex">
+                <input
+                  type="text"
+                  className="border border-gray-300 rounded-lg px-2 py-1 text-center"
+                  value={userBioText}
+                  onChange={(e) => setUserBioBody(e.target.value)}
+                />
+                <button
+                  type="submit"
+                  onClick={handleBioSubmit}
+                  className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setActiveEditField("")}
+                  className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                >
+                  Cancel
+                </button>
+              </form>
+            </div>
+          ) : (
+            <div
+              className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6"
+              onClick={() => setActiveEditField("bio")}
+            >
+              <dt className="text-sm font-medium text-gray-500">Bio</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:col-span-1 sm:mt-0">
+                {userBioBody}
+              </dd>
               <button
-                type="submit"
-                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+                className="sm:col-span-1 text-right"
+                onClick={() => setActiveEditField("bio")}
               >
-                Save
+                Edit
               </button>
-              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
-                Cancel
-              </button>
-            </form>
-          </div>
+            </div>
+          )}
         </dl>
       </div>
+
     </div>
   );
 }
