@@ -108,7 +108,7 @@ export default function Profile() {
     };
 
     if (currentUser.artist === true) {
-      return <input type="checkbox" defaultChecked onClick={handleArtist} />;
+      return <input type="checkbox" defaultChecked={true} onClick={handleArtist} />;
     } else {
       return <input type="checkbox" onClick={handleArtist} />;
     }

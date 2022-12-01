@@ -7,7 +7,7 @@ const Header = () => {
   const [searchPosts, { data }] = useLazyQuery(SEARCH_POSTS);
 
   // handle search input
-  const handleSearch = (e) => {
+  const handleSearch = (e) => { 
     setSearchTerm(e.target.value);
   };
 

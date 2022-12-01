@@ -12,15 +12,6 @@ export default function Profile() {
     refetchQueries: [GET_CURRENT_USER],
   });
 
-  const user = JSON.parse(
-    localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
-  );
-
-  const [activeEditField, setActiveEditField] = React.useState("");
-
-  const [username, setUsername] = React.useState(user.username || "");
-  const [userEmail, setUserEmail] = React.useState(user.email || "");
-
   const [updateUsername] = useMutation(UPDATE_USERNAME, {
     refetchQueries: [GET_CURRENT_USER],
   });
@@ -34,6 +25,15 @@ export default function Profile() {
       refetchQueries: [GET_CURRENT_USER],
     }
   );
+
+  const user = JSON.parse(
+    localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
+  );
+
+  const [activeEditField, setActiveEditField] = React.useState("");
+
+  const [username, setUsername] = React.useState(user.username || "");
+  const [userEmail, setUserEmail] = React.useState(user.email || "");
 
   const handleSubmit = useCallback(
     async (e) => {
@@ -68,7 +68,6 @@ export default function Profile() {
       userEmail,
       updateUsername,
       updateEmail,
-      refetch(),
     ]
   );
 

@@ -13,9 +13,7 @@ import ProfileSettings from "./components/profileSettings";
 import { Header } from "./components/header";
 import Discover from "./pages/Discover";
 
-
 function App() {
-
   return (
     <Router>
       <Routes>
@@ -43,7 +41,6 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:userHandle" element={<Profile />} />
           <Route path="/discover" element={<Discover />} />
-
         </Route>
       </Routes>
     </Router>

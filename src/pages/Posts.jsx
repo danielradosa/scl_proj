@@ -4,6 +4,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { GET_CURRENT_USER, ALL_POSTS } from "../utils/Queries";
 import { DELETE_POST, LIKE_POST } from "../utils/Mutations";
+import { Spinner } from "../components/Spinner";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -21,13 +22,11 @@ export default function Posts() {
     data: currentUserData,
     loading: userLoading,
     error: userError,
-    refetch: userRefetch,
   } = useQuery(GET_CURRENT_USER);
   const {
     data: postsData,
     loading: postsLoading,
     error: postsError,
-    refetch: postsRefetch,
     fetchMore,
   } = useQuery(ALL_POSTS, {
     variables: { limit: 5 },
@@ -43,15 +42,7 @@ export default function Posts() {
     }
   }, [currentUserData, postsData]);
 
-  if (postsLoading || userLoading)
-    return (
-      <img
-        src="https://media.tenor.com/On7kvXhzml4AAAAj/loading-gif.gif"
-        alt="loading"
-        className="loader"
-        width={100}
-      />
-    );
+  if (postsLoading || userLoading) return <Spinner width={100} />;
   if (postsError || userError)
     return (
       <h4>
@@ -114,10 +105,27 @@ export default function Posts() {
     }
   };
 
+  // show button to refetch posts
+  const refetchPosts = () => {
+    fetchMore({
+      variables: {
+        offset: 0,
+      },
+    }).then((res) => {
+      setPosts(res.data.getAllPosts);
+    });
+  };
+
   return (
     <div className="posts mt-0">
       <NewPost />
 
+      <button
+        className="border-2 pl-4 pr-4 mt-8 rounded-lg text-black pt-1 pb-1 bg-white hover:bg-black/10 hover:border-white"
+        onClick={refetchPosts}
+      >
+        Show latest
+      </button>
       <div className="mt-2">
         {posts.map((post) => (
           <div
@@ -149,7 +157,7 @@ export default function Posts() {
                 </span>
                 &nbsp;*{" "}
                 <span className="date">
-                  {new Date(post.createdAt).toLocaleString("fr-FR")}
+                  {new Date(post.createdAt).toLocaleString()}
                 </span>
               </span>
               <h4 className="mt-2 font-bold text-xl">{post.title}</h4>
