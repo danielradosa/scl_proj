@@ -137,3 +137,5 @@ input:checked + .slider:before {
   padding: 1em;
   border-radius: 22px;
 }
+
+textarea { resize: none; }

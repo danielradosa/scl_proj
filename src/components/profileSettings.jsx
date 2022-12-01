@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   UPDATE_USERNAME,
@@ -67,7 +67,7 @@ export default function Profile() {
       userEmail,
       updateUsername,
       updateEmail,
-      refetch()
+      refetch(),
     ]
   );
 
@@ -127,7 +127,7 @@ export default function Profile() {
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           <div className="text-sm mt-2">
             <form onSubmit={handleImageUpload} className="flex text-center">
-              <label htmlFor="image">Upload or change profile picture: </label>
+              <label htmlFor="image" className="font-bold">Upload or change profile picture: </label>
               <input
                 type="file"
                 name="image"
@@ -232,6 +232,76 @@ export default function Profile() {
               </button>
             </div>
           )}
+        </dl>
+      </div>
+
+      <div className="border-t border-gray-200">
+        <dl className="overflow-hidden bg-white mt-8  float-left sm:rounded-lg">
+          <h3 className="text-sm leading-6 text-gray-900 pb-6 ml-[10.85em] font-bold">
+            Edit bio
+          </h3>
+
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
+            <dt className="text-sm font-medium text-gray-500">Bio body</dt>
+            <form action="" className="flex">
+              <textarea
+                type="text"
+                rows={3}
+                cols={32}
+                className="border border-gray-300 rounded-lg px-2 py-1"
+                maxLength={222}
+              />
+              <button
+                type="submit"
+                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+              >
+                Save
+              </button>
+              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
+                Cancel
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
+            <dt className="text-sm font-medium text-gray-500">Web link</dt>
+            <form action="" className="flex">
+              <input
+                type="text"
+                className="border border-gray-300 rounded-lg px-2 py-1 w-64"
+                maxLength={255}
+              />
+              <button
+                type="submit"
+                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+              >
+                Save
+              </button>
+              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
+                Cancel
+              </button>
+            </form>
+          </div>
+
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 w-full">
+            <dt className="text-sm font-medium text-gray-500">Location</dt>
+            <form action="" className="flex">
+              <input
+                type="text"
+                className="border border-gray-300 rounded-lg px-2 py-1 w-64"
+                maxLength={255}
+              />
+              <button
+                type="submit"
+                className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
+              >
+                Save
+              </button>
+              <button className="text-slate-400 border-2 pl-2 pr-2 ml-2 rounded-lg">
+                Cancel
+              </button>
+            </form>
+          </div>
         </dl>
       </div>
     </div>
