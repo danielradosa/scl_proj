@@ -5,9 +5,7 @@ import { ReactComponent as Profile } from "./icons/profile.svg";
 import { ReactComponent as Settings } from "./icons/settings.svg";
 
 const Navigation = () => {
-  const user = JSON.parse(
-    localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
-  );
+  const user = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser"));
 
   const profilePicture = user.profilePicture;
   const userHandle = user.handle;

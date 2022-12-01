@@ -100,11 +100,11 @@ export default function NewPost() {
             className="w-full p-4 text-xl border-2 m-4 rounded-lg"
             name="content"
             required
-            minLength={1}
+            minLength={6}
             rows="5"
             cols="33"
             placeholder="What's happening?"
-            maxLength={280}
+            maxLength={420}
           ></textarea>
         </div>
         <div className="text-sm mt-2">
