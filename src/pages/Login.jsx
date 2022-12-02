@@ -39,7 +39,9 @@ export default function Login() {
   );
 
   return (
-    <div className="mx-auto w-96 backdrop-blur-xl bg-white p-6 mt-12 rounded-xl shadow-lg">
+    <div className="mx-auto w-96 backdrop-blur-xl bg-white p-6 mt-12 rounded-xl">
+
+      
       <form onSubmit={handleLogin} className="grid">
         <div className="l">{loggedInState === true ? <Spinner /> : ""}</div>
         <h2  className="text-center text-3xl pb-4">Login</h2>
