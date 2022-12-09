@@ -19,8 +19,9 @@ const Signup = () => {
         signupMutation({
           variables: { email, password, handle: "@" + handle, username, role },
         });
-
-        window.location.href = "/login";
+        if (signupMutation) {
+          window.location.replace("/login");
+        }
       } else {
         alert("Passwords do not match");
       }
@@ -38,6 +39,7 @@ const Signup = () => {
           placeholder="E-mail"
           required
           value={email}
+          minLength={6}
           onChange={(e) => setEmail(e.target.value)}
         />{" "}
         <br />
@@ -47,6 +49,7 @@ const Signup = () => {
           required
           placeholder="Password"
           value={password}
+          minLength={6}
           onChange={(e) => setPassword(e.target.value)}
         />{" "}
         <br />
@@ -56,6 +59,7 @@ const Signup = () => {
           placeholder="Confirm Password"
           value={passwordC}
           required
+          minLength={6}
           onChange={(e) => setPasswordC(e.target.value)}
         />{" "}
         <br />
@@ -64,7 +68,7 @@ const Signup = () => {
           type="text"
           placeholder="Handle"
           value={handle}
-          required
+          minLength={4}
           onChange={(e) => setHandle(e.target.value)}
         />{" "}
         <br />
@@ -74,6 +78,7 @@ const Signup = () => {
           placeholder="Username"
           value={username}
           required
+          minLength={1}
           onChange={(e) => setUsername(e.target.value)}
         />{" "}
         <br />

@@ -3,9 +3,12 @@ import { ReactComponent as Discover } from "./icons/discover.svg";
 import { ReactComponent as Feed } from "./icons/feed.svg";
 import { ReactComponent as Profile } from "./icons/profile.svg";
 import { ReactComponent as Settings } from "./icons/settings.svg";
+import { ReactComponent as Bookmarks } from "./icons/bookmarks.svg";
 
 const Navigation = () => {
-  const user = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser"));
+  const user = JSON.parse(
+    localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
+  );
 
   const profilePicture = user.profilePicture;
   const userHandle = user.handle;
@@ -40,7 +43,13 @@ const Navigation = () => {
       </div>
 
       <div className="w-72 bg-white p-6 mt-8 shadow-lg rounded-lg relative grid">
-        <Link to="/settings" className="text-lg text-slate-700 links ml-0">
+        <Link
+          to="/bookmarks"
+          className="text-lg text-slate-700 links ml-0 mt-2"
+        >
+          <Bookmarks className="ico" /> Bookmarks
+        </Link>
+        <Link to="/settings" className="text-lg text-slate-700 links ml-0 mt-2">
           <Settings className="ico" />
           Account settings
         </Link>

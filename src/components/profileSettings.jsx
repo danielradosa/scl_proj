@@ -17,15 +17,16 @@ export default function Profile() {
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
-  const userBio = uData?.getCurrentUser?.bio;
+  const userBio = user.bio ? user.bio : { website: "", location: "", body: "" };
 
   const [activeEditField, setActiveEditField] = React.useState("");
 
   const [username, setUsername] = React.useState(user.username || "");
   const [userEmail, setUserEmail] = React.useState(user.email || "");
-  const [userWebsite, setUserWebsite] = React.useState(userBio?.website || "");
-  const [userLocation, setUserLocation] = React.useState(userBio?.location || "");
-  const [userBioBody, setUserBioBody] = React.useState(userBio?.body || "");
+
+  const [userWebsite, setUserWebsite] = React.useState(userBio.website);
+  const [userLocation, setUserLocation] = React.useState(userBio.location);
+  const [userBioBody, setUserBioBody] = React.useState(userBio.body);
 
   const [updateBio] = useMutation(CREATE_UPDATE_BIO, { refetchQueries: [GET_CURRENT_USER]});
   const [updateUsername] = useMutation(UPDATE_USERNAME, { refetchQueries: [GET_CURRENT_USER]});
@@ -41,27 +42,29 @@ export default function Profile() {
           variables: {
             id: user.id,
             username,
-            token:
-              localStorage.getItem("token") || sessionStorage.getItem("token"),
+            token: localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
           refetchQueries: [GET_CURRENT_USER],
         });
+        window.location.reload();
       } else if (activeEditField === "email") {
         await updateEmail({
           variables: {
             id: user.id,
             email: userEmail,
-            token:
-              localStorage.getItem("token") || sessionStorage.getItem("token"),
+            token: localStorage.getItem("token") || sessionStorage.getItem("token"),
           },
           refetchQueries: [GET_CURRENT_USER],
         });
-      } 
+        window.location.reload();
+      } else if (activeEditField === "bio" || activeEditField === "website" || activeEditField === "location") {
+        await updateBio({ variables: { bioBy: user.id, body: userBioBody, website: userWebsite, location: userLocation }, refetchQueries: [GET_CURRENT_USER] });
+        window.location.reload();
+      }
       setActiveEditField("");
-      window.location.reload();
     },
     [ activeEditField, username, userEmail,
-      updateUsername, updateEmail,
+      updateUsername, updateEmail, updateBio,
       refetch(),
     ]
   );
@@ -99,20 +102,6 @@ export default function Profile() {
     [createUpdateProfilePicture, refetch()]
   );
 
-  const handleBioSubmit = useCallback(async (e) => {
-    e.preventDefault();
-    if (activeEditField === "userWebsite") {
-      await updateBio({ variables: { bioBy: user.id, website: userWebsite } });
-    } else if (activeEditField === "userLocation") {
-      await updateBio({ variables: { bioBy: user.id, location: userLocation } });
-    } else if (activeEditField === "userBioBody") {
-      await updateBio({ variables: { bioBy: user.id, body: userBioBody } });
-    }
-    setActiveEditField("");
-    refetch();
-  }, 
-  [activeEditField, userWebsite, userLocation, userBioBody, updateBio]);
-
   // rewrite user data in local and sesstion storage
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser"));
@@ -122,12 +111,14 @@ export default function Profile() {
     } else if (activeEditField === "email") {
       currentUser.email = userEmail;
     } else if (activeEditField === "website") {
-      currentUser.bio.website = userWebsite;
+      userBio.website = userWebsite;
     } else if (activeEditField === "location") {
-      currentUser.bio.location = userLocation;
-    } else if (activeEditField === "body") {
-      currentUser.bio.body = userBioBody;
+      userBio.location = userLocation;
+    } else if (activeEditField === "bio") {
+      userBio.body = userBioBody;
     }
+
+    currentUser.bio = userBio;
 
     currentUser.profilePicture = uData?.getCurrentUser?.profilePicture;
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
@@ -271,7 +262,7 @@ export default function Profile() {
                 />
                 <button
                   type="submit"
-                  onClick={handleBioSubmit}
+                  onClick={handleSubmit}
                   className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
                 >
                   Save
@@ -314,7 +305,7 @@ export default function Profile() {
                 />
                 <button
                   type="submit"
-                  onClick={handleBioSubmit}
+                  onClick={handleSubmit}
                   className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
                 >
                   Save
@@ -352,12 +343,12 @@ export default function Profile() {
                 <input
                   type="text"
                   className="border border-gray-300 rounded-lg px-2 py-1 text-center"
-                  value={userBioText}
+                  value={userBioBody}
                   onChange={(e) => setUserBioBody(e.target.value)}
                 />
                 <button
                   type="submit"
-                  onClick={handleBioSubmit}
+                  onClick={handleSubmit}
                   className="text-orange-400 border-2 pl-2 pr-2 ml-2 rounded-lg"
                 >
                   Save

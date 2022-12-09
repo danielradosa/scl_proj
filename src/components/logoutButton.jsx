@@ -5,11 +5,8 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = useCallback(() => {
-    // remove token and all user info from local and session storage
-    localStorage.removeItem("token");
-    localStorage.removeItem("currentUser");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("currentUser");
+    sessionStorage.clear();
+    localStorage.clear();
     navigate("/login", { replace: true });
   }, [navigate]);
 

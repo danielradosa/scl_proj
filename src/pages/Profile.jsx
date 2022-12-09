@@ -17,6 +17,9 @@ export default function Profile() {
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
+  // save user bio to variable or set to empty string
+  const userBio = currentUser.bio ? currentUser.bio : { website: "", location: "", body: "" };
+
   const { userHandle } = useParams();
   const userHandleToQuery =
     userHandle != null ? userHandle : currentUser.handle;
@@ -104,45 +107,32 @@ export default function Profile() {
     if (userData?.handle !== currentUser.handle) return null;
 
     const handleArtist = () => {
-      toggleArtist({ variables: { id: currentUser.id } }, refetch());
+      toggleArtist({ variables: { id: currentUser.id }}, refetch());
     };
 
-    if (currentUser.artist === true) {
-      return <input type="checkbox" defaultChecked={true} onClick={handleArtist} />;
+    if (currentUser.artist === true && userData?.artist === true) {
+      return <input type="checkbox" defaultChecked onClick={handleArtist} />;
     } else {
       return <input type="checkbox" onClick={handleArtist} />;
     }
   };
 
-  // show follow button if not current user and not already following
+  // check following
   const checkFollow = () => {
+    // Follow/Unfollow should only work if the user is not the current user
+    if (userData?.handle === currentUser.handle) return null;
+
     const handleFollow = () => {
-      followUnfollowUser({
-        variables: { id: currentUser.id, handle: userData?.handle },
-      });
+      followUnfollowUser({variables: { id: currentUser.id, handle: userData?.handle }}, refetch());
     };
 
     // if current user is not the user being viewed
-    if (currentUser.handle !== userData?.handle) {
+    if (currentUser.handle !== userData?.handle && userData?.handle != null) {
       // if current user is not following user being viewed
-      if (!currentUser.following.includes(userData?.handle)) {
-        return (
-          <button
-            className="mt-8 rounded-lg border-2 pr-4 pl-4 text-white bg-black h-8 ml-12"
-            onClick={handleFollow}
-          >
-            Follow
-          </button>
-        );
+      if (currentUser.following.find((user) => user.handle === userData?.handle)) {
+        return <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-white bg-black h-8 ml-12" onClick={handleFollow}>Follow</button>;
       } else {
-        return (
-          <button
-            className="mt-8 rounded-lg border-2 pr-4 pl-4 text-black border-black h-8 ml-12"
-            onClick={handleFollow}
-          >
-            Unfollow
-          </button>
-        );
+        return <button className="mt-8 rounded-lg border-2 pr-4 pl-4 text-black border-black h-8 ml-12" onClick={handleFollow} >Unfollow</button>;
       }
     }
   };
@@ -166,19 +156,19 @@ export default function Profile() {
           <div className="float-right flex">
             <h3 className="text-black text-md flex mr-4">
               <Location />
-              {"Location"}
+              {userBio.location || "No location"}
             </h3>
             <h3 className="text-black text-md flex">
               <Weblink />
-              <a href={"No link"} target={"_blank"}>
-                {"Weblink"}
+              <a href={userBio.website || "No link"} target={"_blank"}>
+                {userBio.website || "No link"}
               </a>
             </h3>
           </div>
         </div>
 
         <div>
-          <p className="text-slate-700 text-xl mt-6 ml-4">{"Bio body"}</p>{" "}
+          <p className="text-slate-700 text-xl mt-6 ml-4">{userBio.body || "User has no bio info"}</p>{" "}
           {userData?.handle === currentUser.handle ? (
             <div className="toggle ml-4 text-sm mt-2">
               Want to be discoverable as artist? Flip the switch{" "}

@@ -12,6 +12,7 @@ import { Navigation } from "./components/navigation";
 import ProfileSettings from "./components/profileSettings";
 import { Header } from "./components/header";
 import Discover from "./pages/Discover";
+import Bookmarks from "./pages/Bookmarks";
 
 function App() {
   return (
@@ -41,6 +42,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/:userHandle" element={<Profile />} />
           <Route path="/discover" element={<Discover />} />
+          <Route path="*" element={<h1>404: Not Found</h1>} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
         </Route>
       </Routes>
     </Router>

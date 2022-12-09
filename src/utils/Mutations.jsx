@@ -129,9 +129,9 @@ export const UPDATE_EMAIL = gql`
 export const CREATE_UPDATE_BIO = gql`
   mutation createOrUpdateBio(
     $bioBy: String!
-    $body: String!
-    $website: String!
-    $location: String!
+    $body: String
+    $website: String
+    $location: String
   ) {
     createOrUpdateBio(
       bioBy: $bioBy
@@ -139,8 +139,9 @@ export const CREATE_UPDATE_BIO = gql`
       website: $website
       location: $location
     ) {
-      id
-      bioBy
+      bioBy {
+        id
+      }
       body
       website
       location
