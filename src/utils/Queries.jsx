@@ -160,6 +160,7 @@ query getMostLikedPosts($limit: Int, $offset: Int) {
     postedBy {
       id
       handle
+      profilePicture
     }
     createdAt
     likedBy {
