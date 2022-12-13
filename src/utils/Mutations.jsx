@@ -9,8 +9,8 @@ export const DELETE_POST = gql`
 `;
 
 export const LIKE_POST = gql`
-  mutation likePost($id: ID!, $token: String!) {
-    likePost(id: $id, token: $token) {
+  mutation likeOrDislikePost($id: ID!, $token: String!) {
+    likeOrDislikePost(id: $id, token: $token) {
       id
     }
   }
