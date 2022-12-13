@@ -17,12 +17,14 @@ const PeopleDiscovery = () => {
     setOffset(offset - limit);
   };
 
-  const { loading, error, data } = useQuery(MOST_FOLLOWED_USERS, {
+  const { loading, error, data, refetch } = useQuery(MOST_FOLLOWED_USERS, {
     variables: { limit: limit, offset: offset },
   });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error}</p>;
+
+  refetch();
 
   return (
     <>

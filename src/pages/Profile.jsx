@@ -21,9 +21,7 @@ export default function Profile() {
   const userBio = currentUser.bio ? currentUser.bio : { website: "", location: "", body: "" };
 
   const { userHandle } = useParams();
-  const userHandleToQuery =
-    userHandle != null ? userHandle : currentUser.handle;
-
+  const userHandleToQuery = userHandle != null ? userHandle : currentUser.handle;
   const allUsers = useQuery(ALL_USERS);
   const userData =
     !allUsers.loading && !allUsers.error
@@ -136,6 +134,8 @@ export default function Profile() {
       }
     }
   };
+
+  refetch();
 
   return (
     <div className="mt-8 float-left posts">
