@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { useMutation } from "@apollo/client";
 import { SIGNUP_MUTATION } from "../utils/Mutations";
+import Swal from 'sweetalert2'
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -19,11 +20,23 @@ const Signup = () => {
         signupMutation({
           variables: { email, password, handle: "@" + handle, username, role },
         });
-        if (signupMutation) {
-          window.location.replace("/login");
-        }
+        Swal.fire({
+          title: 'Success!',
+          text: 'Account created successfully',
+          icon: 'success',
+          confirmButtonText: 'Login now'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "/login";
+          }
+        })
       } else {
-        alert("Passwords do not match");
+        Swal.fire({
+          title: 'Error!',
+          text: 'Passwords do not match',
+          icon: 'error',
+          confirmButtonText: 'Try again'
+        })
       }
     },
     [email, password, handle, username, role, signupMutation]
@@ -85,6 +98,10 @@ const Signup = () => {
         <br />
         <button type="submit" className="text-slate-700 rounded-lg border-2 border-slate-700 pt-2 pb-2">Create account</button>
       </form>
+
+      <p className="text-center pt-4">
+        Already have an account? <a href="/login" className="border-2 text-slate-400 rounded-lg pl-2 pr-2">Login now</a>
+      </p>
     </div>
   );
 };
