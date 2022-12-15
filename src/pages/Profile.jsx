@@ -17,9 +17,6 @@ export default function Profile() {
     localStorage.getItem("currentUser") || sessionStorage.getItem("currentUser")
   );
 
-  // save user bio to variable or set to empty string
-  const userBio = currentUser.bio ? currentUser.bio : { website: "", location: "", body: "" };
-
   const { userHandle } = useParams();
   const userHandleToQuery = userHandle != null ? userHandle : currentUser.handle;
   const allUsers = useQuery(ALL_USERS);
@@ -31,6 +28,9 @@ export default function Profile() {
     variables: { handle: userData?.handle },
     skip: userData == null,
   });
+
+  // save user bio to variable depending on if user is on their own profile or not
+  const userBio = userHandle != null ? userData?.bio : currentUser.bio;
 
   const [deletePost] = useMutation(DELETE_POST, {
     refetchQueries: [
@@ -138,7 +138,7 @@ export default function Profile() {
   refetch();
 
   return (
-    <div className="mt-8 float-left posts">
+    <div className="mt-8 float-left posts ml-[350px]">
       <div className=" bg-white profile rounded-lg shadow-lg p-6">
         <div className="flex">
           <div className="float-left flex">
@@ -156,19 +156,19 @@ export default function Profile() {
           <div className="float-right flex">
             <h3 className="text-black text-md flex mr-4">
               <Location />
-              {userBio.location || "No location"}
+              {userBio?.location || "No location"}
             </h3>
             <h3 className="text-black text-md flex">
               <Weblink />
-              <a href={userBio.website || "No link"} target={"_blank"}>
-                {userBio.website || "No link"}
+              <a href={userBio?.website || "No link"} target={"_blank"}>
+                {userBio?.website || "No link"}
               </a>
             </h3>
           </div>
         </div>
 
         <div>
-          <p className="text-slate-700 text-xl mt-6 ml-4">{userBio.body || "User has no bio info"}</p>{" "}
+          <p className="text-slate-700 text-xl mt-6 ml-4">{userBio?.body || "User has no bio info"}</p>{" "}
           {userData?.handle === currentUser.handle ? (
             <div className="toggle ml-4 text-sm mt-2">
               Want to be discoverable as artist? Flip the switch{" "}

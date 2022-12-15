@@ -126,7 +126,7 @@ export default function Profile() {
   }, [activeEditField, username, userEmail, refetch()]);
 
   return (
-    <div className="overflow-hidden bg-white shadow-lg mt-8 w-1/3 float-left sm:rounded-lg">
+    <div className="overflow-hidden bg-white shadow-lg mt-8 w-1/3 float-left sm:rounded-lg ml-[350px]">
       <div className="px-4 py-5 sm:px-6">
         <h3 className="text-lg font-medium leading-6 text-gray-900">
           <div className="text-sm mt-2">

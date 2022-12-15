@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_MUTATION } from "../utils/Mutations";
 import { GET_CURRENT_USER } from "../utils/Queries";
@@ -40,8 +40,6 @@ export default function Login() {
 
   return (
     <div className="mx-auto w-96 backdrop-blur-xl bg-white p-6 mt-12 rounded-xl">
-
-      
       <form onSubmit={handleLogin} className="grid">
         <div className="l">{loggedInState === true ? <Spinner /> : ""}</div>
         <h2  className="text-center text-3xl pb-4">Login</h2>
@@ -50,6 +48,8 @@ export default function Login() {
           type="email"
           placeholder="E-mail"
           value={email}
+          minLength={6}
+          maxLength={52}
           onChange={(e) => setEmail(e.target.value)}
           required
         />{" "}
@@ -59,6 +59,8 @@ export default function Login() {
           type="password"
           placeholder="Password"
           value={password}
+          minLength={6}
+          maxLength={52}
           onChange={(e) => setPassword(e.target.value)}
           required
         />{" "}

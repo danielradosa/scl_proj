@@ -15,7 +15,7 @@ const Navigation = () => {
   const userName = user.username;
 
   return (
-    <div className="navigation">
+    <div className="navigation fixed">
       <div className="flex w-72 bg-white p-6 m-8 shadow-lg rounded-lg">
         <img
           src={profilePicture}

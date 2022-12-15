@@ -117,7 +117,7 @@ export default function Posts() {
   };
 
   return (
-    <div className="posts mt-0">
+    <div className="posts mt-0 ml-[350px]">
       <NewPost />
 
       <button

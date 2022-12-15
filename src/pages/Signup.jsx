@@ -69,6 +69,7 @@ const Signup = () => {
           placeholder="Handle"
           value={handle}
           minLength={4}
+          required
           onChange={(e) => setHandle(e.target.value)}
         />{" "}
         <br />
@@ -78,7 +79,7 @@ const Signup = () => {
           placeholder="Username"
           value={username}
           required
-          minLength={1}
+          minLength={3}
           onChange={(e) => setUsername(e.target.value)}
         />{" "}
         <br />

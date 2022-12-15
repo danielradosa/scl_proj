@@ -47,7 +47,7 @@ export default function Landing() {
       </div>
       <div className="fixed bottom-0 w-full bg-black/20 backdrop-blur-lg">
         <div className="flex justify-center">
-          <h3 className="text-white text-sm p-2">SOCIALink © 2828</h3>
+          <h3 className="text-white text-sm p-2">SOCIALink © 2060</h3>
         </div>
       </div>
     </>
