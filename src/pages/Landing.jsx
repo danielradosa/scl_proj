@@ -8,7 +8,7 @@ export default function Landing() {
         alt="bg"
         className="w-full h-screen object-cover fixed z-1"
       />
-      <div className="bg-white/80 p-4 pb-24 w-1/2 grid ml-[630px] xs:ml-[420px] rounded-3xl mt-24 absolute shadow-lg backdrop-blur-md">
+      <div className="bg-white/80 p-4 pb-24 w-1/2 grid ml-[630px] sm:ml-[470px] rounded-3xl mt-24 absolute shadow-lg backdrop-blur-md">
         <div>
           <h1 className="text-6xl font-bold p-8 text-center mt-4 sm:text-4xl">
             SOCIAL<span className="text-black">ink</span>
